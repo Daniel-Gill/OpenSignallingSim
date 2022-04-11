@@ -27,3 +27,6 @@ build/
 *.log
 logs/
 system/
+
+# vs code #
+.vscode/

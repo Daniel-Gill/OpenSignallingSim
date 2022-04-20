@@ -4,7 +4,6 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.Input;
-import com.almasb.fxgl.input.InputModifier;
 
 import javafx.scene.input.MouseButton;
 import net.danielgill.ros.block.Block;

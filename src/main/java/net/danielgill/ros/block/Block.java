@@ -61,8 +61,12 @@ public class Block {
         if(this.path != null) {
             throw new IllegalStateException("Block " + this.getId() + " already has a path");
         }
+        if(!path.canActivate()) {
+            throw new IllegalArgumentException("Path " + path.getId() + " cannot be activated");
+        }
         this.path = path;
         this.nextBlock = path.getEndBlock();
+        this.path.activate();
         this.updateSignal();
     }
 

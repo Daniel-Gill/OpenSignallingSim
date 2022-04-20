@@ -53,6 +53,7 @@ public class Railway {
     private void buildPath(String startBlockId, String endBlockId) {
         Path p = new Path(getBlockByID(startBlockId), getBlockByID(endBlockId));
         paths.add(p);
+        p.getStartBlock().addFowardBlock(p.getEndBlock());
     }
 
     private void buildInterlocks() {
@@ -91,6 +92,7 @@ public class Railway {
         for (Element element : elements) {
             element.draw();
         }
+        blocks.get(0).setPath(paths.get(0));
     }
 
     public Block getBlockByID(String id) {

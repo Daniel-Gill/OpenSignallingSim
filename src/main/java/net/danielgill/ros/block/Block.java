@@ -3,6 +3,7 @@ package net.danielgill.ros.block;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.danielgill.ros.path.Path;
 import net.danielgill.ros.signal.Signal;
 
 public class Block {
@@ -14,11 +15,9 @@ public class Block {
     private boolean occupied;
     //private Train train;
 
-    // paths from block
-    private boolean automatic; // automatic will set the path to next block
-    private Block automaticBlock;
-    private boolean pathed;
-    private Block pathBlock;
+    // path from block
+    private Path path;
+    private Block nextBlock;
 
     // signal at front of block
     private Signal signal;
@@ -45,10 +44,8 @@ public class Block {
     }
 
     public void updateSignal() {
-        if(automatic) {
-            signal.update(automaticBlock);
-        } else if(pathed) {
-            signal.update(pathBlock);
+        if(path != null) {
+            signal.update(nextBlock);
         } else {
             signal.update(null);
         }
@@ -57,39 +54,21 @@ public class Block {
         }
     }
 
-    public void setAutomatic(Block automaticBlock) {
-        if(!forwardBlocks.contains(automaticBlock)) {
-            throw new IllegalArgumentException("Block " + automaticBlock.getId() + " is not a forward block of " + this.getId());
+    public void setPath(Path path) {
+        if(!forwardBlocks.contains(path.getEndBlock())) {
+            throw new IllegalArgumentException("Block " + path.getEndBlock().getId() + " is not a forward block of " + this.getId());
         }
-        if(this.automatic || this.pathed) {
+        if(this.path != null) {
             throw new IllegalStateException("Block " + this.getId() + " already has a path");
         }
-        automatic = true;
-        this.automaticBlock = automaticBlock;
-        pathed = false;
-        pathBlock = null;
-        this.updateSignal();
-    }
-
-    public void setPath(Block pathBlock) {
-        if(!forwardBlocks.contains(pathBlock)) {
-            throw new IllegalArgumentException("Block " + pathBlock.getId() + " is not a forward block of " + this.getId());
-        }
-        if(this.pathed || this.automatic) {
-            throw new IllegalStateException("Block " + this.getId() + " already has a path");
-        }
-        automatic = false;
-        this.pathBlock = pathBlock;
-        pathed = true;
-        automaticBlock = null;
+        this.path = path;
+        this.nextBlock = path.getEndBlock();
         this.updateSignal();
     }
 
     public void clearPath() {
-        automatic = false;
-        pathed = false;
-        automaticBlock = null;
-        pathBlock = null;
+        this.path = null;
+        this.nextBlock = null;
         this.updateSignal();
     }
 

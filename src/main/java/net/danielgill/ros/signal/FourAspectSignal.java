@@ -1,6 +1,7 @@
 package net.danielgill.ros.signal;
 
 import net.danielgill.ros.block.Block;
+import net.danielgill.ros.track.Direction;
 
 public class FourAspectSignal extends Signal {
     public FourAspectSignal() {
@@ -26,5 +27,11 @@ public class FourAspectSignal extends Signal {
             return;
         }
         this.aspect = SignalAspect.CLEAR;
+    }
+
+    @Override
+    public void draw(int x, int y, Direction direction) {
+        // TODO Auto-generated method stub
+        
     }
 }

@@ -1,6 +1,7 @@
 package net.danielgill.ros.signal;
 
 import net.danielgill.ros.block.Block;
+import net.danielgill.ros.track.Direction;
 
 public abstract class Signal {
     protected SignalAspect aspect;
@@ -14,4 +15,6 @@ public abstract class Signal {
     }
 
     public abstract void update(Block nextBlock);
+
+    public abstract void draw(int x, int y, Direction direction);
 }

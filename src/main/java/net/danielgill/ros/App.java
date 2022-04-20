@@ -7,14 +7,18 @@ import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.InputModifier;
 
 import javafx.scene.input.MouseButton;
+import net.danielgill.ros.block.Block;
 import net.danielgill.ros.graphics.Grid;
+import net.danielgill.ros.signal.FourAspectSignal;
+import net.danielgill.ros.signal.SignalAspect;
+import net.danielgill.ros.signal.TwoAspectSignal;
 import net.danielgill.ros.track.StraightTrackElement;
 import net.danielgill.ros.ui.DragAction;
 import net.danielgill.ros.ui.LeftClickAction;
 import net.danielgill.ros.ui.RightClickAction;
 
 public class App extends GameApplication {
-    private static Grid grid = Grid.getInstance();
+    private static Grid grid;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -54,6 +58,34 @@ public class App extends GameApplication {
     }
 
     public static void main(String[] args) {
+        grid = Grid.getInstance();
         launch(args);
+        Block b = new Block("1", new FourAspectSignal());
+        Block b2 = new Block("2", new FourAspectSignal());
+        Block b3 = new Block("3", new FourAspectSignal());
+        Block b4 = new Block("4", new FourAspectSignal());
+        b.addFowardBlock(b2);
+        b2.addFowardBlock(b3);
+        b3.addFowardBlock(b4);
+        b2.setPath(b3);
+        b3.setPath(b4);
+        b.setPath(b2);
+        System.out.println(b.getSignal().getAspect());
+        System.out.println(b2.getSignal().getAspect());
+        System.out.println(b3.getSignal().getAspect());
+        System.out.println(b4.getSignal().getAspect());
+        b2.setOccupied(true);
+        System.out.println("");
+        System.out.println(b.getSignal().getAspect());
+        System.out.println(b2.getSignal().getAspect());
+        System.out.println(b3.getSignal().getAspect());
+        System.out.println(b4.getSignal().getAspect());
+        b2.setOccupied(false);
+        b3.setOccupied(true);
+        System.out.println("");
+        System.out.println(b.getSignal().getAspect());
+        System.out.println(b2.getSignal().getAspect());
+        System.out.println(b3.getSignal().getAspect());
+        System.out.println(b4.getSignal().getAspect());
     }
 }

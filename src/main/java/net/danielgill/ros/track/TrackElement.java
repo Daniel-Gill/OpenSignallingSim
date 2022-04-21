@@ -5,6 +5,7 @@ import com.almasb.fxgl.entity.Entity;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.StrokeLineCap;
 
 public class TrackElement extends Element {
     private Entity entity;
@@ -25,6 +26,7 @@ public class TrackElement extends Element {
     public void draw() {
         Line line = new Line(x1, y1, x2, y2);
         line.setStrokeWidth(7);
+        line.setStrokeLineCap(StrokeLineCap.BUTT);
         entity = FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
     }
 
@@ -33,6 +35,7 @@ public class TrackElement extends Element {
         Line line = new Line(x1, y1, x2, y2);
         line.setStroke(Color.RED);
         line.setStrokeWidth(7);
+        line.setStrokeLineCap(StrokeLineCap.BUTT);
         entity = FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
     }
 
@@ -41,6 +44,7 @@ public class TrackElement extends Element {
         Line line = new Line(x1, y1, x2, y2);
         line.setStroke(Color.BLACK);
         line.setStrokeWidth(7);
+        line.setStrokeLineCap(StrokeLineCap.BUTT);
         entity = FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
     }
 }

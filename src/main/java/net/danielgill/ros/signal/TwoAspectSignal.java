@@ -46,6 +46,36 @@ public class TwoAspectSignal extends Signal {
             line.setStrokeWidth(4);
             FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
             drawAspect();
+        } else if(direction == Direction.WEST) {
+            this.x = x - 20;
+            this.y = y + 20;
+            line = new Line(x, y, x, y + 20);
+            line.setStrokeWidth(4);
+            FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
+            line = new Line(x, y + 20, x - 20, y + 20);
+            line.setStrokeWidth(4);
+            FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
+            drawAspect();
+        } else if(direction == Direction.NORTH) {
+            this.x = x - 20;
+            this.y = y - 20;
+            line = new Line(x, y, x - 20, y);
+            line.setStrokeWidth(4);
+            FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
+            line = new Line(x - 20, y, x - 20, y - 20);
+            line.setStrokeWidth(4);
+            FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
+            drawAspect();
+        } else if(direction == Direction.SOUTH) {
+            this.x = x + 20;
+            this.y = y + 20;
+            line = new Line(x, y, x + 20, y);
+            line.setStrokeWidth(4);
+            FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
+            line = new Line(x + 20, y, x + 20, y + 20);
+            line.setStrokeWidth(4);
+            FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
+            drawAspect();
         }
     }
 

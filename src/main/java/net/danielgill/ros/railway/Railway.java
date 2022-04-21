@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.danielgill.ros.block.Block;
 import net.danielgill.ros.path.Path;
+import net.danielgill.ros.signal.FourAspectSignal;
 import net.danielgill.ros.signal.Signal;
 import net.danielgill.ros.signal.TwoAspectSignal;
 import net.danielgill.ros.track.BlockElement;
@@ -34,9 +35,12 @@ public class Railway {
     }
 
     private void buildBlocks() {
-        buildBlock("1", new TwoAspectSignal(), 100, 100, Direction.EAST);
-        buildBlock("2", new TwoAspectSignal(), 280, 140, Direction.EAST);
-        buildBlock("3", new TwoAspectSignal(), 280, 100, Direction.EAST);
+        buildBlock("1", new FourAspectSignal(), 100, 100, Direction.EAST);
+        buildBlock("2", new FourAspectSignal(), 240, 100, Direction.EAST);
+        buildBlock("3", new FourAspectSignal(), 380, 100, Direction.EAST);
+        buildBlock("4", new FourAspectSignal(), 520, 100, Direction.EAST);
+        buildBlock("5", new FourAspectSignal(), 660, 100, Direction.EAST);
+        buildBlock("6", new FourAspectSignal(), 800, 100, Direction.EAST);
     }
 
     private void buildBlock(String id, Signal signal, int x, int y, Direction direction) {
@@ -47,7 +51,10 @@ public class Railway {
 
     private void buildPaths() {
         buildPath("1", "2");
-        buildPath("1", "3");
+        buildPath("2", "3");
+        buildPath("3", "4");
+        buildPath("4", "5");
+        buildPath("5", "6");
     }
 
     private void buildPath(String startBlockId, String endBlockId) {
@@ -57,27 +64,29 @@ public class Railway {
     }
 
     private void buildInterlocks() {
-        getPathByID("1-2").addInterlock(getPathByID("1-3"));
-        getPathByID("1-3").addInterlock(getPathByID("1-2"));
+        
     }
 
     private void buildTracks() {
         List<Path> paths = new ArrayList<>();
         paths.add(getPathByID("1-2"));
-        paths.add(getPathByID("1-3"));
-        buildTrack(100, 100, 140, 100, paths);
+        buildTrack(100, 100, 200, 100, paths);
 
         paths = new ArrayList<>();
-        paths.add(getPathByID("1-2"));
-        buildTrack(140, 100, 240, 100, paths);
+        paths.add(getPathByID("2-3"));
+        buildTrack(240, 100, 340, 100, paths);
 
         paths = new ArrayList<>();
-        paths.add(getPathByID("1-3"));
-        buildTrack(140, 100, 180, 140, paths);
+        paths.add(getPathByID("3-4"));
+        buildTrack(380, 100, 480, 100, paths);
 
         paths = new ArrayList<>();
-        paths.add(getPathByID("1-3"));
-        buildTrack(180, 140, 240, 140, paths);
+        paths.add(getPathByID("4-5"));
+        buildTrack(520, 100, 620, 100, paths);
+
+        paths = new ArrayList<>();
+        paths.add(getPathByID("5-6"));
+        buildTrack(660, 100, 760, 100, paths);
     }
 
     private void buildTrack(int x1, int y1, int x2, int y2, List<Path> paths) {
@@ -93,6 +102,9 @@ public class Railway {
             element.draw();
         }
         blocks.get(0).setPath(paths.get(0));
+        blocks.get(1).setPath(paths.get(1));
+        blocks.get(2).setPath(paths.get(2));
+        blocks.get(4).setPath(paths.get(4));
     }
 
     public Block getBlockByID(String id) {

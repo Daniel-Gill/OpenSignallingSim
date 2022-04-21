@@ -27,6 +27,18 @@ public class BlockElement extends Element {
             line = new Line(x, y, x - 40, y);
             line.setStrokeWidth(20);
             FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
+        } else if(direction == Direction.WEST) {
+            line = new Line(x, y, x + 40, y);
+            line.setStrokeWidth(20);
+            FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
+        } else if(direction == Direction.NORTH) {
+            line = new Line(x, y, x, y + 40);
+            line.setStrokeWidth(20);
+            FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
+        } else if(direction == Direction.SOUTH) {
+            line = new Line(x, y, x, y - 40);
+            line.setStrokeWidth(20);
+            FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
         }
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javafx.geometry.Point2D;
 import net.danielgill.ros.block.Block;
+import net.danielgill.ros.block.SignalledBlock;
 import net.danielgill.ros.path.Path;
 import net.danielgill.ros.signal.FourAspectSignal;
 import net.danielgill.ros.signal.Signal;
@@ -46,7 +47,7 @@ public class Railway {
     }
 
     private void buildBlock(String id, Signal signal, int x, int y, Direction direction) {
-        Block b = new Block(id, signal);
+        SignalledBlock b = new SignalledBlock(id, signal);
         blocks.add(b);
         elements.add(new BlockElement(x, y, direction, b));
     }
@@ -155,7 +156,8 @@ public class Railway {
                 continue;
             }
             BlockElement be = (BlockElement) b;
-            if(be.getX() <= pos.getX() && pos.getX() <= be.getX() + 40 && be.getY() - 10 <= pos.getY() && pos.getY() <= be.getY() + 10) {
+            
+            if(pos.getX() >= be.getX() - 40 && pos.getX() <= be.getX() && be.getY() - 10 <= pos.getY() && pos.getY() <= be.getY() + 10) {
                 return be.getBlock();
             }
         }

@@ -5,6 +5,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import net.danielgill.ros.block.Block;
+import net.danielgill.ros.block.SignalledBlock;
 
 public class BlockElement extends Element {
     private int x;
@@ -21,7 +22,9 @@ public class BlockElement extends Element {
 
     @Override
     public void draw() {
-        block.getSignal().draw(x, y, direction);
+        if(block instanceof SignalledBlock) {
+            ((SignalledBlock) block).getSignal().draw(x, y, direction);;
+        }
 
         Line line;
         if(direction == Direction.EAST) {

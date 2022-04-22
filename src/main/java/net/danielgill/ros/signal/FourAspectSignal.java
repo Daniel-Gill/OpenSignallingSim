@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import net.danielgill.ros.block.Block;
+import net.danielgill.ros.block.SignalledBlock;
 import net.danielgill.ros.track.Direction;
 
 public class FourAspectSignal extends Signal {
@@ -32,15 +33,26 @@ public class FourAspectSignal extends Signal {
             drawAspect();
             return;
         }
-        if(nextBlock.getSignal().getAspect() == SignalAspect.DANGER) {
-            this.aspect = SignalAspect.CAUTION;
-            drawAspect();
-            return;
+        while(nextBlock instanceof Block && !(nextBlock instanceof SignalledBlock)) {
+            if(nextBlock.getPath() != null) {
+                nextBlock = nextBlock.getPath().getEndBlock();
+            } else {
+                this.aspect = SignalAspect.DANGER;
+                drawAspect();
+                return;
+            }
         }
-        if(nextBlock.getSignal().getAspect() == SignalAspect.CAUTION) {
-            this.aspect = SignalAspect.PRELIM_CAUTION;
-            drawAspect();
-            return;
+        if(nextBlock instanceof SignalledBlock) {
+            if(((SignalledBlock) nextBlock).getSignal().getAspect() == SignalAspect.DANGER) {
+                this.aspect = SignalAspect.CAUTION;
+                drawAspect();
+                return;
+            }
+            if(((SignalledBlock) nextBlock).getSignal().getAspect() == SignalAspect.CAUTION) {
+                this.aspect = SignalAspect.PRELIM_CAUTION;
+                drawAspect();
+                return;
+            }
         }
         this.aspect = SignalAspect.CLEAR;
         drawAspect();

@@ -1,42 +1,42 @@
 package net.danielgill.ros.block;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.danielgill.ros.path.Path;
+import net.danielgill.ros.signal.Signal;
 
-public class Block {
-    protected String id;
-    protected List<Block> forwardBlocks;
-    protected List<Block> backBlocks;
+public class SignalledBlock extends Block {
+    private Signal signal;
 
-    // trains in block
-    protected boolean occupied;
-    //private Train train;
-
-    // path from block
-    protected Path path;
-    protected Block nextBlock;
-
-    public Block(String id) {
-        this.id = id;
-        forwardBlocks = new ArrayList<>();
-        backBlocks = new ArrayList<>();
+    public SignalledBlock(String id, Signal signal) {
+        super(id);
+        this.signal = signal;
+        this.signal.update(null);
     }
 
-    public String getId() {
-        return id;
+    public void updateSignal() {
+        if(path != null) {
+            signal.update(nextBlock);
+        } else {
+            signal.update(null);
+        }
+        for(Block b : backBlocks) {
+            if(b instanceof SignalledBlock) {
+                ((SignalledBlock) b).updateSignal();
+            }
+        }
     }
 
-    public boolean isOccupied() {
-        return occupied;
-    }
-
+    @Override
     public void setOccupied(boolean occupied) {
         this.occupied = occupied;
+        this.updateSignal();
     }
 
+    @Override
     public void setPath(Path path) {
+        if(path == null) {
+            System.err.println("No path to be set for " + this.id);
+            return;
+        }
         if(!forwardBlocks.contains(path.getEndBlock())) {
             System.err.println(path.getStartBlock().id + " is not a forward block of " + this.id);
             return;
@@ -49,11 +49,14 @@ public class Block {
             System.err.println("Path cannot be activated for " + this.id);
             return;
         }
+        
         this.path = path;
         this.nextBlock = path.getEndBlock();
         this.path.activate();
+        this.updateSignal();
     }
 
+    @Override
     public void clearPath() {
         if(this.path == null) {
             return;
@@ -61,28 +64,24 @@ public class Block {
         this.path.deactivate();
         this.path = null;
         this.nextBlock = null;
+        this.updateSignal();
     }
 
+    @Override
     public void addFowardBlock(Block block) {
         forwardBlocks.add(block);
         block.addBackBlock(this);
+        this.updateSignal();
     }
 
+    @Override
     public void removeForwardBlock(Block block) {
         forwardBlocks.remove(block);
         block.removeBackBlock(this);
+        this.updateSignal();
     }
 
-    public Path getPath() {
-        return path;
+    public Signal getSignal() {
+        return signal;
     }
-
-    protected void addBackBlock(Block block) {
-        backBlocks.add(block);
-    }
-
-    protected void removeBackBlock(Block block) {
-        backBlocks.remove(block);
-    }
-
 }

@@ -7,9 +7,11 @@ import com.almasb.fxgl.input.Input;
 
 import javafx.scene.input.MouseButton;
 import net.danielgill.ros.railway.Railway;
-import net.danielgill.ros.ui.DragAction;
+import net.danielgill.ros.ui.LeftClickAction;
+import net.danielgill.ros.ui.RightClickAction;
 
 public class App extends GameApplication {
+    protected Railway railway;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -24,19 +26,20 @@ public class App extends GameApplication {
 
     @Override
     protected void initGame() {
-        Railway r = new Railway();
-        r.build();
-        r.draw();
+        railway.build();
+        railway.draw();
     }
 
     @Override
     protected void initInput() {
+        railway = new Railway();
         Input input = FXGL.getInput();
         registerInputs(input);
     }
 
     private void registerInputs(Input input) {
-        input.addAction(new DragAction("Drag"), MouseButton.SECONDARY);
+        input.addAction(new RightClickAction("Right Click", this.railway), MouseButton.SECONDARY);
+        input.addAction(new LeftClickAction("Left Click", this.railway), MouseButton.PRIMARY);
     }
 
     @Override

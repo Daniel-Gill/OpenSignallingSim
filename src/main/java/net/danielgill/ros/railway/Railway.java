@@ -3,11 +3,11 @@ package net.danielgill.ros.railway;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.geometry.Point2D;
 import net.danielgill.ros.block.Block;
 import net.danielgill.ros.path.Path;
 import net.danielgill.ros.signal.FourAspectSignal;
 import net.danielgill.ros.signal.Signal;
-import net.danielgill.ros.signal.TwoAspectSignal;
 import net.danielgill.ros.track.BlockElement;
 import net.danielgill.ros.track.Direction;
 import net.danielgill.ros.track.Element;
@@ -41,6 +41,8 @@ public class Railway {
         buildBlock("4", new FourAspectSignal(), 520, 100, Direction.EAST);
         buildBlock("5", new FourAspectSignal(), 660, 100, Direction.EAST);
         buildBlock("6", new FourAspectSignal(), 800, 100, Direction.EAST);
+        buildBlock("7", new FourAspectSignal(), 660, 140, Direction.EAST);
+        buildBlock("8", new FourAspectSignal(), 800, 140, Direction.EAST);
     }
 
     private void buildBlock(String id, Signal signal, int x, int y, Direction direction) {
@@ -54,7 +56,11 @@ public class Railway {
         buildPath("2", "3");
         buildPath("3", "4");
         buildPath("4", "5");
+        buildPath("4", "7");
+        getPathByID("4-5").addInterlock(getPathByID("4-7"));
+        getPathByID("4-7").addInterlock(getPathByID("4-5"));
         buildPath("5", "6");
+        buildPath("7", "8");
     }
 
     private void buildPath(String startBlockId, String endBlockId) {
@@ -82,11 +88,28 @@ public class Railway {
 
         paths = new ArrayList<>();
         paths.add(getPathByID("4-5"));
-        buildTrack(520, 100, 620, 100, paths);
+        paths.add(getPathByID("4-7"));
+        buildTrack(520, 100, 560, 100, paths);
+
+        paths = new ArrayList<>();
+        paths.add(getPathByID("4-5"));
+        buildTrack(560, 100, 620, 100, paths);
+
+        paths = new ArrayList<>();
+        paths.add(getPathByID("4-7"));
+        buildTrack(560, 100, 600, 140, paths);
+
+        paths = new ArrayList<>();
+        paths.add(getPathByID("4-7"));
+        buildTrack(600, 140, 620, 140, paths);
 
         paths = new ArrayList<>();
         paths.add(getPathByID("5-6"));
         buildTrack(660, 100, 760, 100, paths);
+
+        paths = new ArrayList<>();
+        paths.add(getPathByID("7-8"));
+        buildTrack(660, 140, 760, 140, paths);
     }
 
     private void buildTrack(int x1, int y1, int x2, int y2, List<Path> paths) {
@@ -102,9 +125,10 @@ public class Railway {
             element.draw();
         }
         blocks.get(0).setPath(paths.get(0));
-        blocks.get(1).setPath(paths.get(1));
         blocks.get(2).setPath(paths.get(2));
-        blocks.get(4).setPath(paths.get(4));
+        blocks.get(3).setPath(paths.get(4));
+        blocks.get(6).setPath(paths.get(6));
+        blocks.get(4).setPath(paths.get(5));
     }
 
     public Block getBlockByID(String id) {
@@ -120,6 +144,19 @@ public class Railway {
         for (Path path : paths) {
             if (path.getId().equals(id)) {
                 return path;
+            }
+        }
+        return null;
+    }
+
+    public Block getBlockAt(Point2D pos) {
+        for(Element b : elements) {
+            if(!(b instanceof BlockElement)) {
+                continue;
+            }
+            BlockElement be = (BlockElement) b;
+            if(be.getX() <= pos.getX() && pos.getX() <= be.getX() + 40 && be.getY() - 10 <= pos.getY() && pos.getY() <= be.getY() + 10) {
+                return be.getBlock();
             }
         }
         return null;

@@ -56,13 +56,16 @@ public class Block {
 
     public void setPath(Path path) {
         if(!forwardBlocks.contains(path.getEndBlock())) {
-            throw new IllegalArgumentException("Block " + path.getEndBlock().getId() + " is not a forward block of " + this.getId());
+            System.err.println(path.getStartBlock().id + " is not a forward block of " + this.id);
+            return;
         }
         if(this.path != null) {
-            throw new IllegalStateException("Block " + this.getId() + " already has a path");
+            System.err.println("Path already set for " + this.id);
+            return;
         }
         if(!path.canActivate()) {
-            throw new IllegalArgumentException("Path " + path.getId() + " cannot be activated");
+            System.err.println("Path cannot be activated for " + this.id);
+            return;
         }
         this.path = path;
         this.nextBlock = path.getEndBlock();
@@ -71,6 +74,10 @@ public class Block {
     }
 
     public void clearPath() {
+        if(this.path == null) {
+            return;
+        }
+        this.path.deactivate();
         this.path = null;
         this.nextBlock = null;
         this.updateSignal();

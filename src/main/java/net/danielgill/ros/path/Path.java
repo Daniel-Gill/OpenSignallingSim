@@ -71,4 +71,11 @@ public class Path {
             }
         }
     }
+
+    public void deactivate() {
+        active = false;
+        for(TrackElement t : trackElements) {
+            t.deactivate();
+        }
+    }
 }

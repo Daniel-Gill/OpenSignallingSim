@@ -46,4 +46,16 @@ public class BlockElement extends Element {
             FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
         }
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public Block getBlock() {
+        return block;
+    }
 }

@@ -1,19 +1,11 @@
-## FXGL using Maven/Gradle
+## Railway Operation Simulator in Java
 
-This is an example of a basic Maven / Gradle configuration for creating FXGL games on Java 17+ using Java and/or Kotlin.
+A reworking of the original [Railway Operation Simulator](https://www.railwayoperationsimulator.com/) in Java with some additional features. This project is a work in progress.
 
-For actual game examples, please see [FXGLGames](https://github.com/AlmasB/FXGLGames).
-
-You may wish to update the FXGL version to [latest](https://github.com/AlmasB/FXGL#maven).
+This project is not intended to replace the original simulator, but rather to provide a different experience with some different features.
 
 ### Run via Maven
 
 ```
 mvn javafx:run
-```
-
-### Run via Gradle
-
-```
-./gradlew run
 ```

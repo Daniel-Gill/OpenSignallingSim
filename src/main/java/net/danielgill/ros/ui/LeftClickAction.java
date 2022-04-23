@@ -25,6 +25,7 @@ public class LeftClickAction extends UserAction {
         Block b = r.getBlockAt(lastPos);
 
         if(b == null) {
+            this.block = null;
             return;
         }
 

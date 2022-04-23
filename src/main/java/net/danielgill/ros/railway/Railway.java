@@ -157,8 +157,10 @@ public class Railway {
             }
             BlockElement be = (BlockElement) b;
             
-            if(pos.getX() >= be.getX() - 40 && pos.getX() <= be.getX() && be.getY() - 10 <= pos.getY() && pos.getY() <= be.getY() + 10) {
-                return be.getBlock();
+            if(be.getDirection() == Direction.EAST) {
+                if(pos.getX() >= be.getX() - 40 && pos.getX() <= be.getX() && be.getY() - 10 <= pos.getY() && pos.getY() <= be.getY() + 10) {
+                    return be.getBlock();
+                }
             }
         }
         return null;

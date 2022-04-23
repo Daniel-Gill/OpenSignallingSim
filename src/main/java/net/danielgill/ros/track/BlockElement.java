@@ -61,4 +61,8 @@ public class BlockElement extends Element {
     public Block getBlock() {
         return block;
     }
+
+    public Direction getDirection() {
+        return direction;
+    }
 }

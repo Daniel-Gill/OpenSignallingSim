@@ -8,6 +8,7 @@ import net.danielgill.ros.block.Block;
 import net.danielgill.ros.block.SignalledBlock;
 import net.danielgill.ros.path.Path;
 import net.danielgill.ros.signal.FourAspectSignal;
+import net.danielgill.ros.signal.ShuntSignal;
 import net.danielgill.ros.signal.Signal;
 import net.danielgill.ros.track.BlockElement;
 import net.danielgill.ros.track.Direction;
@@ -38,11 +39,11 @@ public class Railway {
     private void buildBlocks() {
         buildBlock("1", new FourAspectSignal(), 100, 100, Direction.EAST);
         buildBlock("2", new FourAspectSignal(), 240, 100, Direction.EAST);
-        buildBlock("3", new FourAspectSignal(), 380, 100, Direction.EAST);
-        buildBlock("4", new FourAspectSignal(), 520, 100, Direction.EAST);
+        buildBlock("3", new ShuntSignal(), 380, 100, Direction.EAST);
+        buildBlock("4", new ShuntSignal(), 520, 100, Direction.EAST);
         buildBlock("5", new FourAspectSignal(), 660, 100, Direction.EAST);
         buildBlock("6", new FourAspectSignal(), 800, 100, Direction.EAST);
-        buildBlock("7", new FourAspectSignal(), 660, 140, Direction.EAST);
+        buildBlock("7", new ShuntSignal(), 660, 140, Direction.EAST);
         buildBlock("8", new FourAspectSignal(), 800, 140, Direction.EAST);
     }
 

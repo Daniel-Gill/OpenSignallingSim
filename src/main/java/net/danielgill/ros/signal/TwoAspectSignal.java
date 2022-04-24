@@ -1,34 +1,39 @@
 package net.danielgill.ros.signal;
 
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import net.danielgill.ros.block.Block;
+import net.danielgill.ros.block.SignalledBlock;
 import net.danielgill.ros.track.Direction;
 
 public class TwoAspectSignal extends Signal {
-    private double x;
-    private double y;
-    private Entity entity;
-
     public TwoAspectSignal() {
         
     }
 
     @Override
     public void update(Block nextBlock) {
-        System.out.println("Updating signal");
         if(nextBlock == null) {
             this.aspect = SignalAspect.DANGER;
+            drawAspect();
             return;
         }
-        if(nextBlock.isOccupied()) {
-            this.aspect = SignalAspect.DANGER;
-        } else {
+        while(nextBlock instanceof Block && !(nextBlock instanceof SignalledBlock)) {
+            if(nextBlock.getPath() != null) {
+                nextBlock = nextBlock.getPath().getEndBlock();
+            } else {
+                this.aspect = SignalAspect.DANGER;
+                drawAspect();
+                return;
+            }
+        }
+        if(nextBlock instanceof SignalledBlock) {
             this.aspect = SignalAspect.CLEAR;
+            drawAspect();
+            return;
         }
         drawAspect();
     }

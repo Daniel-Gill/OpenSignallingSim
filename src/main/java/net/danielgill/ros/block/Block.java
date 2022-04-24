@@ -85,4 +85,9 @@ public class Block {
         backBlocks.remove(block);
     }
 
+    public String getOccupantId() {
+        //TODO replace with Train
+        return "1A01";
+    }
+
 }

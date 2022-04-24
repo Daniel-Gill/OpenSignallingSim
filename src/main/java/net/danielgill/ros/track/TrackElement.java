@@ -47,4 +47,8 @@ public class TrackElement extends Element {
         line.setStrokeLineCap(StrokeLineCap.BUTT);
         entity = FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
     }
+
+    @Override
+    public void update() {
+    }
 }

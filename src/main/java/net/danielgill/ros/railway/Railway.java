@@ -123,14 +123,14 @@ public class Railway {
     }
 
     public void draw() {
-        for (Element element : elements) {
-            element.draw();
-        }
+        elements.forEach(e -> e.draw());
         blocks.get(0).setPath(paths.get(0));
         blocks.get(2).setPath(paths.get(2));
         blocks.get(3).setPath(paths.get(4));
         blocks.get(6).setPath(paths.get(6));
         blocks.get(4).setPath(paths.get(5));
+        blocks.get(3).setOccupied(true);
+        elements.forEach(e -> e.update());
     }
 
     public Block getBlockByID(String id) {

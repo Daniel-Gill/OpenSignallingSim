@@ -30,6 +30,11 @@ public class Path {
 
     public void addInterlock(Path interlock) {
         interlocks.add(interlock);
+        interlock.addInterlockNR(this);
+    }
+
+    private void addInterlockNR(Path interlock) {
+        interlocks.add(interlock);
     }
 
     public String getId() {

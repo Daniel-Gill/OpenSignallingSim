@@ -60,8 +60,10 @@ public class FourAspectSignal extends Signal {
         Line line;
         this.dir = direction;
         if(direction == Direction.EAST) {
-            this.x = x + 20;
-            this.y = y - 20;
+            this.x = x + 20 + xOffset;
+            this.y = y - 20 + yOffset;
+            x += xOffset;
+            y += yOffset;
             line = new Line(x, y, x, y - 20);
             line.setStrokeWidth(4);
             FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
@@ -70,8 +72,10 @@ public class FourAspectSignal extends Signal {
             FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
             drawAspect();
         } else if(direction == Direction.WEST) {
-            this.x = x - 20;
-            this.y = y + 20;
+            this.x = x - 20 + xOffset;
+            this.y = y + 20 + yOffset;
+            x += xOffset;
+            y += yOffset;
             line = new Line(x, y, x, y + 20);
             line.setStrokeWidth(4);
             FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
@@ -80,8 +84,10 @@ public class FourAspectSignal extends Signal {
             FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
             drawAspect();
         } else if(direction == Direction.NORTH) {
-            this.x = x - 20;
-            this.y = y - 20;
+            this.x = x - 20 + xOffset;
+            this.y = y - 20 + yOffset;
+            x += xOffset;
+            y += yOffset;
             line = new Line(x, y, x - 20, y);
             line.setStrokeWidth(4);
             FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
@@ -90,8 +96,10 @@ public class FourAspectSignal extends Signal {
             FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();
             drawAspect();
         } else if(direction == Direction.SOUTH) {
-            this.x = x + 20;
-            this.y = y + 20;
+            this.x = x + 20 + xOffset;
+            this.y = y + 20 + yOffset;
+            x += xOffset;
+            y += yOffset;
             line = new Line(x, y, x + 20, y);
             line.setStrokeWidth(4);
             FXGL.entityBuilder().at(0,0).view(line).buildAndAttach();

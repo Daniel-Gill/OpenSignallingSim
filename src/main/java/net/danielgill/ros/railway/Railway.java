@@ -38,99 +38,104 @@ public class Railway {
     }
 
     private void buildBlocks() {
-        buildBlock("1", new FourAspectSignal(0, 0), 100, 100, Direction.EAST);
-        buildBlock("2", new FourAspectSignal(0, 0), 240, 100, Direction.EAST);
-        buildBlock("3", new ShuntSignal(0, 0), 380, 100, Direction.EAST);
-        buildBlock("4", new ShuntSignal(0, 0), 520, 100, Direction.EAST);
-        buildBlock("5", new FourAspectSignal(0, 0), 660, 100, Direction.EAST);
-        buildBlock("6", new FourAspectSignal(0, 0), 800, 100, Direction.EAST);
-        buildBlock("7", new ShuntSignal(0, 0), 660, 140, Direction.EAST);
-        buildBlock("8", new FourAspectSignal(0, 0), 800, 140, Direction.EAST);
-    }
-
-    private void buildBlock(String id, Signal signal, int x, int y, Direction direction) {
-        TwoWaySignalledBlock b = new TwoWaySignalledBlock(id, signal, new ShuntSignal(0, 0));
-        blocks.add(b);
-        elements.add(new BlockElement(x, y, direction, b));
+        buildBlock(new TwoWaySignalledBlock("7", new FourAspectSignal(30, 0), new FourAspectSignal(-30, 0)), 200, 200, Direction.EAST);
+        buildBlock(new SignalledBlock("2", new FourAspectSignal(0, 0)), 250, 100, Direction.EAST);
+        buildBlock(new SignalledBlock("4", new FourAspectSignal(0, 0)), 350, 150, Direction.WEST);
+        buildBlock(new SignalledBlock("3", new FourAspectSignal(0, 0)), 400, 100, Direction.EAST);
+        buildBlock(new TwoWaySignalledBlock("5", new FourAspectSignal(0, 0), new ShuntSignal(0, 0)), 210, 150, Direction.WEST);
+        buildBlock(new SignalledBlock("1", new FourAspectSignal(0, 0)), 140, 100, Direction.EAST);
+        buildBlock(new SignalledBlock("6", new FourAspectSignal(0, 0)), 100, 150, Direction.WEST);
     }
 
     private void buildPaths() {
-        buildPath("1", "2");
-        buildPath("2", "3");
-        buildPath("3", "4");
-        buildPath("4", "5");
-        buildPath("4", "7");
-        getPathByID("4-5").addInterlock(getPathByID("4-7"));
-        getPathByID("4-7").addInterlock(getPathByID("4-5"));
-        buildPath("5", "6");
-        buildPath("7", "8");
-    }
-
-    private void buildPath(String startBlockId, String endBlockId) {
-        Path p = new Path(getBlockByID(startBlockId), getBlockByID(endBlockId), Direction.EAST);
-        paths.add(p);
-        p.getStartBlock().addFowardBlock(p.getEndBlock());
+        buildPath("1", "2", Direction.EAST);
+        buildPath("2", "3", Direction.EAST);
+        buildPath("4", "5", Direction.EAST);
+        buildPath("5", "6", Direction.EAST);
+        
+        buildPath("5", "3", Direction.WEST);
     }
 
     private void buildInterlocks() {
-        
+        getPathByID("4-5").addInterlock(getPathByID("5-3"));
+        getPathByID("2-3").addInterlock(getPathByID("5-3"));
     }
 
     private void buildTracks() {
         List<Path> paths = new ArrayList<>();
-        paths.add(getPathByID("1-2"));
-        buildTrack(100, 100, 200, 100, paths);
+        //paths.add(getPathByID("1-2"));
+        buildTrack(100, 200, 130, 200, paths);
+
+        paths = new ArrayList<>();
+        //paths.add(getPathByID("1-2"));
+        buildTrack(130, 200, 230, 200, paths);
+
+        paths = new ArrayList<>();
+        //paths.add(getPathByID("1-2"));
+        buildTrack(230, 200, 275, 200, paths);
+
+        paths = new ArrayList<>();
+        //paths.add(getPathByID("1-2"));
+        buildTrack(275, 200, 300, 150, paths);
+
+        paths = new ArrayList<>();
+        paths.add(getPathByID("4-5"));
+        buildTrack(300, 150, 320, 150, paths);
+
+        paths = new ArrayList<>();
+        paths.add(getPathByID("4-5"));
+        buildTrack(320, 150, 350, 150, paths);
+
+        paths = new ArrayList<>();
+        paths.add(getPathByID("5-3"));
+        buildTrack(320, 150, 340, 100, paths);
 
         paths = new ArrayList<>();
         paths.add(getPathByID("2-3"));
-        buildTrack(240, 100, 340, 100, paths);
+        paths.add(getPathByID("5-3"));
+        buildTrack(340, 100, 360, 100, paths);
 
         paths = new ArrayList<>();
-        paths.add(getPathByID("3-4"));
-        buildTrack(380, 100, 480, 100, paths);
-
-        paths = new ArrayList<>();
-        paths.add(getPathByID("4-5"));
-        paths.add(getPathByID("4-7"));
-        buildTrack(520, 100, 560, 100, paths);
+        paths.add(getPathByID("2-3"));
+        buildTrack(250, 100, 340, 100, paths);
 
         paths = new ArrayList<>();
         paths.add(getPathByID("4-5"));
-        buildTrack(560, 100, 620, 100, paths);
-
-        paths = new ArrayList<>();
-        paths.add(getPathByID("4-7"));
-        buildTrack(560, 100, 600, 140, paths);
-
-        paths = new ArrayList<>();
-        paths.add(getPathByID("4-7"));
-        buildTrack(600, 140, 620, 140, paths);
+        paths.add(getPathByID("5-3"));
+        buildTrack(320, 150, 250, 150, paths);
 
         paths = new ArrayList<>();
         paths.add(getPathByID("5-6"));
-        buildTrack(660, 100, 760, 100, paths);
+        buildTrack(210, 150, 140, 150, paths);
 
         paths = new ArrayList<>();
-        paths.add(getPathByID("7-8"));
-        buildTrack(660, 140, 760, 140, paths);
+        paths.add(getPathByID("1-2"));
+        buildTrack(210, 100, 140, 100, paths);
+    }
+
+    private void buildBlock(Block b, int x, int y, Direction direction) {
+        blocks.add(b);
+        elements.add(new BlockElement(x, y, direction, b));
+    }
+
+    private void buildPath(String startBlockId, String endBlockId, Direction d) {
+        Path p = new Path(getBlockByID(startBlockId), getBlockByID(endBlockId), d);
+        paths.add(p);
+        p.getStartBlock().addFowardBlock(p.getEndBlock());
     }
 
     private void buildTrack(int x1, int y1, int x2, int y2, List<Path> paths) {
         TrackElement t = new TrackElement(x1, y1, x2, y2);
-        for(Path p : paths) {
-            p.addTrackElement(t);
+        if(paths.size() > 0 || paths != null) {
+            for(Path p : paths) {
+                p.addTrackElement(t);
+            }
         }
         elements.add(t);
     }
 
     public void draw() {
         elements.forEach(e -> e.draw());
-        blocks.get(0).setPath(paths.get(0));
-        blocks.get(2).setPath(paths.get(2));
-        blocks.get(3).setPath(paths.get(4));
-        blocks.get(6).setPath(paths.get(6));
-        blocks.get(4).setPath(paths.get(5));
-        blocks.get(3).setOccupied(true);
         elements.forEach(e -> e.update());
     }
 
@@ -161,6 +166,18 @@ public class Railway {
             
             if(be.getDirection() == Direction.EAST) {
                 if(pos.getX() >= be.getX() - 40 && pos.getX() <= be.getX() && be.getY() - 10 <= pos.getY() && pos.getY() <= be.getY() + 10) {
+                    return be.getBlock();
+                }
+            } else if(be.getDirection() == Direction.WEST) {
+                if(pos.getX() <= be.getX() + 40 && pos.getX() >= be.getX() && be.getY() - 10 <= pos.getY() && pos.getY() <= be.getY() + 10) {
+                    return be.getBlock();
+                }
+            } else if(be.getDirection() == Direction.NORTH) {
+                if(pos.getY() <= be.getY() + 40 && pos.getY() >= be.getY() && be.getX() - 10 <= pos.getX() && pos.getX() <= be.getX() + 10) {
+                    return be.getBlock();
+                }
+            } else if(be.getDirection() == Direction.SOUTH) {
+                if(pos.getY() >= be.getY() - 40 && pos.getY() <= be.getY() && be.getX() - 10 <= pos.getX() && pos.getX() <= be.getX() + 10) {
                     return be.getBlock();
                 }
             }

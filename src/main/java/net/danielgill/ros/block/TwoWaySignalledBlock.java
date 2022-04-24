@@ -34,7 +34,15 @@ public class TwoWaySignalledBlock extends SignalledBlock {
     @Override
     public void drawSignal(int x, int y, Direction direction) {
         signal.draw(x, y, direction);
-        oppositeSignal.draw(x - 40, y, direction.getOpposite());
+        if(direction == Direction.EAST) {
+            oppositeSignal.draw(x - 40, y, direction.getOpposite());
+        } else if(direction == Direction.WEST) {
+            oppositeSignal.draw(x + 40, y, direction.getOpposite());
+        } else if(direction == Direction.NORTH) {
+            oppositeSignal.draw(x, y + 40, direction.getOpposite());
+        } else if(direction == Direction.SOUTH) {
+            oppositeSignal.draw(x, y - 40, direction.getOpposite());
+        }
     }
     
 }

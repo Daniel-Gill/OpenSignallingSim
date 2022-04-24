@@ -10,8 +10,8 @@ import net.danielgill.ros.block.SignalledBlock;
 import net.danielgill.ros.track.Direction;
 
 public class TwoAspectSignal extends Signal {
-    public TwoAspectSignal() {
-        
+    public TwoAspectSignal(int xOffset, int yOffset) {
+        super(xOffset, yOffset); 
     }
 
     @Override

@@ -10,9 +10,13 @@ public abstract class Signal {
     protected int x;
     protected int y;
     protected Entity entity;
+    protected int xOffset;
+    protected int yOffset;
 
-    public Signal() {
+    public Signal(int xOffset, int yOffset) {
         this.aspect = SignalAspect.CLEAR;
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
     }
 
     public SignalAspect getAspect() {

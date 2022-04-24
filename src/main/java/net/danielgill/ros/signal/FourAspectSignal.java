@@ -14,8 +14,8 @@ public class FourAspectSignal extends Signal {
     private Entity secondEntity;
     private Direction dir;
 
-    public FourAspectSignal() {
-        
+    public FourAspectSignal(int xOffset, int yOffset) {
+        super(xOffset, yOffset);
     }
 
     @Override

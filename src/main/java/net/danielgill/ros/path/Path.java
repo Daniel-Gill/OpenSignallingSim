@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.danielgill.ros.block.Block;
+import net.danielgill.ros.track.Direction;
 import net.danielgill.ros.track.TrackElement;
 
 public class Path {
@@ -13,16 +14,9 @@ public class Path {
     private List<TrackElement> trackElements;
     private boolean active;
     private List<Path> interlocks;
+    private Direction direction;
 
-    public Path(String id, Block startBlock, Block endBlock) {
-        this.id = id;
-        this.startBlock = startBlock;
-        this.endBlock = endBlock;
-        trackElements = new ArrayList<>();
-        interlocks = new ArrayList<>();
-    }
-
-    public Path(Block startBlock, Block endBlock) {
+    public Path(Block startBlock, Block endBlock, Direction direction) {
         this.id = startBlock.getId() + "-" + endBlock.getId();
         this.startBlock = startBlock;
         this.endBlock = endBlock;
@@ -77,5 +71,9 @@ public class Path {
         for(TrackElement t : trackElements) {
             t.deactivate();
         }
+    }
+
+    public Direction getDirection() {
+        return direction;
     }
 }

@@ -28,7 +28,7 @@ public class BlockElement extends Element {
     @Override
     public void draw() {
         if(block instanceof SignalledBlock) {
-            ((SignalledBlock) block).getSignal().draw(x, y, direction);;
+            ((SignalledBlock) block).drawSignal(x, y, direction);
         }
 
         Line line;

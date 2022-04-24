@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.danielgill.ros.path.Path;
+import net.danielgill.ros.track.Direction;
 
 public class Block {
     protected String id;
     protected List<Block> forwardBlocks;
     protected List<Block> backBlocks;
+    protected Direction direction;
 
     // trains in block
     protected boolean occupied;

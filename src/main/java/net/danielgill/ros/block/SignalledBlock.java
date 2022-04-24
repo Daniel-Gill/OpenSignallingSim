@@ -2,9 +2,10 @@ package net.danielgill.ros.block;
 
 import net.danielgill.ros.path.Path;
 import net.danielgill.ros.signal.Signal;
+import net.danielgill.ros.track.Direction;
 
 public class SignalledBlock extends Block {
-    private Signal signal;
+    protected Signal signal;
 
     public SignalledBlock(String id, Signal signal) {
         super(id);
@@ -23,6 +24,10 @@ public class SignalledBlock extends Block {
                 ((SignalledBlock) b).updateSignal();
             }
         }
+    }
+
+    public void drawSignal(int x, int y, Direction direction) {
+        signal.draw(x, y, direction);
     }
 
     @Override

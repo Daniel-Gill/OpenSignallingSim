@@ -12,6 +12,10 @@ import net.danielgill.ros.track.Direction;
 
 public class ShuntSignal extends Signal {
 
+    public ShuntSignal(int xOffset, int yOffset) {
+        super(xOffset, yOffset);
+    }
+
     @Override
     public void update(Block nextBlock) {
         if(nextBlock == null) {

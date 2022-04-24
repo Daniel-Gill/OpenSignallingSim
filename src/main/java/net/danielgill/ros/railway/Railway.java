@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.geometry.Point2D;
 import net.danielgill.ros.block.Block;
 import net.danielgill.ros.block.SignalledBlock;
+import net.danielgill.ros.block.TwoWaySignalledBlock;
 import net.danielgill.ros.path.Path;
 import net.danielgill.ros.signal.FourAspectSignal;
 import net.danielgill.ros.signal.ShuntSignal;
@@ -37,18 +38,18 @@ public class Railway {
     }
 
     private void buildBlocks() {
-        buildBlock("1", new FourAspectSignal(), 100, 100, Direction.EAST);
-        buildBlock("2", new FourAspectSignal(), 240, 100, Direction.EAST);
-        buildBlock("3", new ShuntSignal(), 380, 100, Direction.EAST);
-        buildBlock("4", new ShuntSignal(), 520, 100, Direction.EAST);
-        buildBlock("5", new FourAspectSignal(), 660, 100, Direction.EAST);
-        buildBlock("6", new FourAspectSignal(), 800, 100, Direction.EAST);
-        buildBlock("7", new ShuntSignal(), 660, 140, Direction.EAST);
-        buildBlock("8", new FourAspectSignal(), 800, 140, Direction.EAST);
+        buildBlock("1", new FourAspectSignal(0, 0), 100, 100, Direction.EAST);
+        buildBlock("2", new FourAspectSignal(0, 0), 240, 100, Direction.EAST);
+        buildBlock("3", new ShuntSignal(0, 0), 380, 100, Direction.EAST);
+        buildBlock("4", new ShuntSignal(0, 0), 520, 100, Direction.EAST);
+        buildBlock("5", new FourAspectSignal(0, 0), 660, 100, Direction.EAST);
+        buildBlock("6", new FourAspectSignal(0, 0), 800, 100, Direction.EAST);
+        buildBlock("7", new ShuntSignal(0, 0), 660, 140, Direction.EAST);
+        buildBlock("8", new FourAspectSignal(0, 0), 800, 140, Direction.EAST);
     }
 
     private void buildBlock(String id, Signal signal, int x, int y, Direction direction) {
-        SignalledBlock b = new SignalledBlock(id, signal);
+        TwoWaySignalledBlock b = new TwoWaySignalledBlock(id, signal, new ShuntSignal(0, 0));
         blocks.add(b);
         elements.add(new BlockElement(x, y, direction, b));
     }
@@ -66,7 +67,7 @@ public class Railway {
     }
 
     private void buildPath(String startBlockId, String endBlockId) {
-        Path p = new Path(getBlockByID(startBlockId), getBlockByID(endBlockId));
+        Path p = new Path(getBlockByID(startBlockId), getBlockByID(endBlockId), Direction.EAST);
         paths.add(p);
         p.getStartBlock().addFowardBlock(p.getEndBlock());
     }

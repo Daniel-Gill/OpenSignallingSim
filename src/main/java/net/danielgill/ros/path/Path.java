@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.danielgill.ros.block.Block;
-import net.danielgill.ros.track.Direction;
-import net.danielgill.ros.track.TrackElement;
+import net.danielgill.ros.track.Track;
+import net.danielgill.ros.ui.Direction;
 
 public class Path {
     private String id;
     private Block startBlock;
     private Block endBlock;
-    private List<TrackElement> trackElements;
+    private List<Track> track;
     private boolean active;
     private List<Path> interlocks;
     private Direction direction;
@@ -20,12 +20,13 @@ public class Path {
         this.id = startBlock.getId() + "-" + endBlock.getId();
         this.startBlock = startBlock;
         this.endBlock = endBlock;
-        trackElements = new ArrayList<>();
+        track = new ArrayList<>();
         interlocks = new ArrayList<>();
+        this.direction = direction;
     }
 
-    public void addTrackElement(TrackElement trackElement) {
-        trackElements.add(trackElement);
+    public void addTrack(Track Track) {
+        track.add(Track);
     }
 
     public void addInterlock(Path interlock) {
@@ -65,7 +66,7 @@ public class Path {
     public void activate() {
         if(canActivate()) {
             active = true;
-            for(TrackElement t : trackElements) {
+            for(Track t : track) {
                 t.activate();
             }
         }
@@ -73,7 +74,7 @@ public class Path {
 
     public void deactivate() {
         active = false;
-        for(TrackElement t : trackElements) {
+        for(Track t : track) {
             t.deactivate();
         }
     }

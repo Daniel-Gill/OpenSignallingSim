@@ -5,6 +5,7 @@ import com.almasb.fxgl.input.UserAction;
 
 import javafx.geometry.Point2D;
 import net.danielgill.ros.block.Block;
+import net.danielgill.ros.block.SignalledBlock;
 import net.danielgill.ros.path.Path;
 import net.danielgill.ros.railway.Railway;
 
@@ -43,6 +44,9 @@ public class LeftClickAction extends UserAction {
 
         Path p = r.getPathByID(this.block.getId() + "-" + b.getId());
         this.block.setPath(p);
+        if(this.block instanceof SignalledBlock) {
+            ((SignalledBlock) this.block).updateSignal();
+        }
         this.block = null;
     }
 

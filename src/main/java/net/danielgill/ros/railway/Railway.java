@@ -5,26 +5,25 @@ import java.util.List;
 
 import javafx.geometry.Point2D;
 import net.danielgill.ros.block.Block;
-import net.danielgill.ros.block.SignalledBlock;
-import net.danielgill.ros.block.TwoWaySignalledBlock;
+import net.danielgill.ros.block.SignalBlock;
+import net.danielgill.ros.block.TwoWaySignalBlock;
 import net.danielgill.ros.path.Path;
 import net.danielgill.ros.signal.FourAspectSignal;
 import net.danielgill.ros.signal.ShuntSignal;
-import net.danielgill.ros.signal.Signal;
-import net.danielgill.ros.track.BlockElement;
-import net.danielgill.ros.track.Direction;
-import net.danielgill.ros.track.Element;
-import net.danielgill.ros.track.TrackElement;
+import net.danielgill.ros.track.Track;
+import net.danielgill.ros.ui.Direction;
+import net.danielgill.ros.ui.Drawable;
+import net.danielgill.ros.ui.Selectable;
 
 public class Railway {
+    private List<Drawable> drawables;
     private List<Block> blocks;
     private List<Path> paths;
-    private List<Element> elements;
 
     public Railway() {
+        drawables = new ArrayList<>();
         blocks = new ArrayList<>();
         paths = new ArrayList<>();
-        elements = new ArrayList<>();
     }
 
     /**
@@ -38,22 +37,22 @@ public class Railway {
     }
 
     private void buildBlocks() {
-        buildBlock(new TwoWaySignalledBlock("7", new FourAspectSignal(30, 0), new FourAspectSignal(-30, 0)), 200, 200, Direction.EAST);
-        buildBlock(new SignalledBlock("2", new FourAspectSignal(0, 0)), 250, 100, Direction.EAST);
-        buildBlock(new SignalledBlock("4", new FourAspectSignal(0, 0)), 350, 150, Direction.WEST);
-        buildBlock(new SignalledBlock("3", new FourAspectSignal(0, 0)), 400, 100, Direction.EAST);
-        buildBlock(new TwoWaySignalledBlock("5", new FourAspectSignal(0, 0), new ShuntSignal(0, 0)), 210, 150, Direction.WEST);
-        buildBlock(new SignalledBlock("1", new FourAspectSignal(0, 0)), 140, 100, Direction.EAST);
-        buildBlock(new SignalledBlock("6", new FourAspectSignal(0, 0)), 100, 150, Direction.WEST);
+        addBlock(new TwoWaySignalBlock("7", 200, 200, Direction.EAST, new FourAspectSignal(30, 0), new FourAspectSignal(-30, 0)));
+        addBlock(new SignalBlock("2", 250, 100, Direction.EAST, new FourAspectSignal(0, 0)));
+        addBlock(new SignalBlock("4", 350, 150, Direction.WEST, new FourAspectSignal(0, 0)));
+        addBlock(new SignalBlock("3", 400, 100, Direction.EAST, new FourAspectSignal(0, 0)));
+        addBlock(new TwoWaySignalBlock("5", 210, 150, Direction.WEST, new FourAspectSignal(0, 0), new ShuntSignal(0, 0)));
+        addBlock(new SignalBlock("1", 140, 100, Direction.EAST, new FourAspectSignal(0, 0)));
+        addBlock(new SignalBlock("6", 100, 150, Direction.WEST, new FourAspectSignal(0, 0)));
     }
 
     private void buildPaths() {
         buildPath("1", "2", Direction.EAST);
         buildPath("2", "3", Direction.EAST);
         buildPath("4", "5", Direction.EAST);
-        buildPath("5", "6", Direction.EAST);
+        buildPath("5", "6", Direction.WEST);
         
-        buildPath("5", "3", Direction.WEST);
+        buildPath("5", "3", Direction.EAST);
     }
 
     private void buildInterlocks() {
@@ -113,30 +112,30 @@ public class Railway {
         buildTrack(210, 100, 140, 100, paths);
     }
 
-    private void buildBlock(Block b, int x, int y, Direction direction) {
+    private void addBlock(Block b) {
         blocks.add(b);
-        elements.add(new BlockElement(x, y, direction, b));
+        drawables.add(b);
     }
 
     private void buildPath(String startBlockId, String endBlockId, Direction d) {
         Path p = new Path(getBlockByID(startBlockId), getBlockByID(endBlockId), d);
         paths.add(p);
-        p.getStartBlock().addFowardBlock(p.getEndBlock());
+        p.getStartBlock().addPath(p);
     }
 
     private void buildTrack(int x1, int y1, int x2, int y2, List<Path> paths) {
-        TrackElement t = new TrackElement(x1, y1, x2, y2);
+        Track t = new Track(x1, y1, x2, y2);
         if(paths.size() > 0 || paths != null) {
             for(Path p : paths) {
-                p.addTrackElement(t);
+                p.addTrack(t);
             }
         }
-        elements.add(t);
+        drawables.add(t);
     }
 
     public void draw() {
-        elements.forEach(e -> e.draw());
-        elements.forEach(e -> e.update());
+        drawables.forEach(e -> e.draw());
+        drawables.forEach(e -> e.update());
     }
 
     public Block getBlockByID(String id) {
@@ -158,27 +157,10 @@ public class Railway {
     }
 
     public Block getBlockAt(Point2D pos) {
-        for(Element b : elements) {
-            if(!(b instanceof BlockElement)) {
-                continue;
-            }
-            BlockElement be = (BlockElement) b;
-            
-            if(be.getDirection() == Direction.EAST) {
-                if(pos.getX() >= be.getX() - 40 && pos.getX() <= be.getX() && be.getY() - 10 <= pos.getY() && pos.getY() <= be.getY() + 10) {
-                    return be.getBlock();
-                }
-            } else if(be.getDirection() == Direction.WEST) {
-                if(pos.getX() <= be.getX() + 40 && pos.getX() >= be.getX() && be.getY() - 10 <= pos.getY() && pos.getY() <= be.getY() + 10) {
-                    return be.getBlock();
-                }
-            } else if(be.getDirection() == Direction.NORTH) {
-                if(pos.getY() <= be.getY() + 40 && pos.getY() >= be.getY() && be.getX() - 10 <= pos.getX() && pos.getX() <= be.getX() + 10) {
-                    return be.getBlock();
-                }
-            } else if(be.getDirection() == Direction.SOUTH) {
-                if(pos.getY() >= be.getY() - 40 && pos.getY() <= be.getY() && be.getX() - 10 <= pos.getX() && pos.getX() <= be.getX() + 10) {
-                    return be.getBlock();
+        for(Drawable d : drawables) {
+            if(d instanceof Selectable) {
+                if(((Selectable) d).isSelected(pos)) {
+                    return (Block) d;
                 }
             }
         }

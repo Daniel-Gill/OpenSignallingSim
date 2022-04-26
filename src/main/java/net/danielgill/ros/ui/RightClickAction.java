@@ -5,6 +5,7 @@ import com.almasb.fxgl.input.UserAction;
 
 import javafx.geometry.Point2D;
 import net.danielgill.ros.block.Block;
+import net.danielgill.ros.block.SignalledBlock;
 import net.danielgill.ros.railway.Railway;
 
 public class RightClickAction extends UserAction {
@@ -28,6 +29,9 @@ public class RightClickAction extends UserAction {
         System.out.println("Clicked on block " + b.getId());
 
         b.clearPath();
+        if(b instanceof SignalledBlock) {
+            ((SignalledBlock) b).updateSignal();
+        }
     }
     
 }

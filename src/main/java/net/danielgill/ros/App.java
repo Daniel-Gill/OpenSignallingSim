@@ -4,14 +4,18 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.Input;
+import com.almasb.fxgl.ui.UI;
 
 import javafx.scene.input.MouseButton;
 import net.danielgill.ros.railway.Railway;
+import net.danielgill.ros.time.Clock;
 import net.danielgill.ros.ui.LeftClickAction;
+import net.danielgill.ros.ui.MainController;
 import net.danielgill.ros.ui.RightClickAction;
 
 public class App extends GameApplication {
-    protected Railway railway;
+    public static Clock clock = new Clock(0, 0, 0);
+    public static Railway railway = new Railway();
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -22,6 +26,7 @@ public class App extends GameApplication {
         settings.setIntroEnabled(false);
         settings.setFullScreenAllowed(false);
         settings.setCloseConfirmation(false);
+        clock = new Clock(7, 0, 0);
     }
 
     @Override
@@ -32,19 +37,19 @@ public class App extends GameApplication {
 
     @Override
     protected void initInput() {
-        railway = new Railway();
         Input input = FXGL.getInput();
         registerInputs(input);
     }
 
     private void registerInputs(Input input) {
-        input.addAction(new RightClickAction("Right Click", this.railway), MouseButton.SECONDARY);
-        input.addAction(new LeftClickAction("Left Click", this.railway), MouseButton.PRIMARY);
+        input.addAction(new RightClickAction("Right Click", App.railway), MouseButton.SECONDARY);
+        input.addAction(new LeftClickAction("Left Click", App.railway), MouseButton.PRIMARY);
     }
 
     @Override
     protected void initUI() {
-        
+        UI ui = FXGL.getAssetLoader().loadUI("main.fxml", new MainController());
+        FXGL.getGameScene().addUI(ui);
     }
 
     public static void main(String[] args) {

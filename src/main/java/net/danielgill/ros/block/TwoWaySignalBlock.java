@@ -44,6 +44,12 @@ public class TwoWaySignalBlock extends Block implements SignalledBlock {
         }
     }
 
+    @Override
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
+        this.updateSignal();
+    }
+
     public void drawSignals(int x, int y, Direction direction) {
         mainSignal.draw(x, y, direction);
         if(direction == Direction.EAST) {

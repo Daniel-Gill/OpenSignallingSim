@@ -14,6 +14,7 @@ public class MainController implements UIController {
 
     @Override
     public void init() {
+        clock.setText(App.clock.getTime().toString());
         App.clock.runAtSecond(() -> {
             clock.setText(App.clock.getTime().toString());
         });

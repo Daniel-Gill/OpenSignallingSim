@@ -27,12 +27,14 @@ public class Clock {
             for(Runnable r : runAtSecond) {
                 r.run();
             }
+            System.out.println(time.toString());
             time.addSecond(1);
         }, Duration.seconds(1));
         ta.pause();
     }
 
     public void start() {
+        System.out.println("START");
         ta.resume();
     }
 
@@ -51,6 +53,12 @@ public class Clock {
 
     public void runAtSecond(Runnable r) {
         runAtSecond.add(r);
+    }
+
+    public void runAfter(Runnable r, int second) {
+        Time t = time.copy();
+        t.addSecond(second);
+        runAtTime(r, t);
     }
 
     private void runActions() {

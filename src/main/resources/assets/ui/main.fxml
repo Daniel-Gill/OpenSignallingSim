@@ -19,7 +19,7 @@
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
-          <Menu fx:id="clock" mnemonicParsing="false" text="07:00:00">
+          <Menu fx:id="clock" mnemonicParsing="false" text="00:00:00">
                <items>
                   <MenuItem fx:id="start" mnemonicParsing="false" text="Start" />
                   <MenuItem fx:id="pause" mnemonicParsing="false" text="Pause" />

@@ -14,8 +14,8 @@ import net.danielgill.ros.ui.MainController;
 import net.danielgill.ros.ui.RightClickAction;
 
 public class App extends GameApplication {
-    public static Clock clock = new Clock(0, 0, 0);
-    public static Railway railway = new Railway();
+    public static Clock clock;
+    public static Railway railway;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -26,17 +26,19 @@ public class App extends GameApplication {
         settings.setIntroEnabled(false);
         settings.setFullScreenAllowed(false);
         settings.setCloseConfirmation(false);
-        clock = new Clock(7, 0, 0);
     }
 
     @Override
     protected void initGame() {
         railway.build();
         railway.draw();
+
+        clock = new Clock(0, 0, 0);
     }
 
     @Override
     protected void initInput() {
+        railway = new Railway();
         Input input = FXGL.getInput();
         registerInputs(input);
     }

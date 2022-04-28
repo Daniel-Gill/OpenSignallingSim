@@ -9,6 +9,10 @@ import com.almasb.fxgl.ui.UI;
 import javafx.scene.input.MouseButton;
 import net.danielgill.ros.railway.Railway;
 import net.danielgill.ros.time.Clock;
+import net.danielgill.ros.time.Time;
+import net.danielgill.ros.timetable.Schedule;
+import net.danielgill.ros.timetable.Timetable;
+import net.danielgill.ros.timetable.event.EntryEvent;
 import net.danielgill.ros.ui.LeftClickAction;
 import net.danielgill.ros.ui.MainController;
 import net.danielgill.ros.ui.RightClickAction;
@@ -16,6 +20,7 @@ import net.danielgill.ros.ui.RightClickAction;
 public class App extends GameApplication {
     public static Clock clock;
     public static Railway railway;
+    public static Timetable ttb;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -33,7 +38,13 @@ public class App extends GameApplication {
         railway.build();
         railway.draw();
 
-        clock = new Clock(0, 0, 0);
+        ttb = new Timetable(new Time(7, 0, 0));
+        clock = new Clock(ttb.getStartTime());
+
+        Schedule s = new Schedule("1A02");
+        s.addEvent(new EntryEvent(new Time(7, 1, 5), railway.getBlockByID("1")));
+        ttb.addSchedule(s);
+        ttb.createTrains();
     }
 
     @Override

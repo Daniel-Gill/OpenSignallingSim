@@ -132,7 +132,7 @@ public class Railway {
         paths.add(getPathByID("1-2"));
         buildTrack(210, 100, 140, 100, paths);
     }
-
+    
     private void addBlock(Block b) {
         blocks.add(b);
         drawables.add(b);
@@ -145,7 +145,7 @@ public class Railway {
     }
 
     private void buildTrack(int x1, int y1, int x2, int y2, List<Path> paths) {
-        Track t = new Track(x1, y1, x2, y2);
+        Track t = new Track(x1, y1, x2, y2, 1000, 100);
         if(paths.size() > 0 || paths != null) {
             for(Path p : paths) {
                 p.addTrack(t);

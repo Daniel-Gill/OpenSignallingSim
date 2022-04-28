@@ -63,7 +63,6 @@ public class FourAspectSignal extends Signal {
         if(secondEntity != null) {
             FXGL.getGameWorld().removeEntity(secondEntity);
         }
-        System.out.println("Drawing aspect: " + aspect);
         if(aspect == SignalAspect.CLEAR) {
             Circle c = new Circle(x, y, 6);
             c.setFill(Color.GREEN);

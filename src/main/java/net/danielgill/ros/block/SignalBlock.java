@@ -2,9 +2,11 @@ package net.danielgill.ros.block;
 
 import com.almasb.fxgl.dsl.FXGL;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
-import net.danielgill.ros.path.Path;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import net.danielgill.ros.signal.Signal;
 import net.danielgill.ros.signal.SignalAspect;
 import net.danielgill.ros.ui.Direction;
@@ -33,45 +35,23 @@ public class SignalBlock extends Block implements SignalledBlock {
     }
 
     @Override
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
-        this.updateSignal();
-    }
-
-    @Override
-    public void setPath(Path path) {
-        if(path == null) {
-            System.err.println("No path to be set for " + this.id);
-            return;
+    public void update() {
+        if(entity != null) {
+            FXGL.getGameWorld().removeEntity(entity);
         }
-        if(!forwardBlocks.contains(path.getEndBlock())) {
-            System.err.println(path.getStartBlock().id + " is not a forward block of " + this.id);
-            return;
+        if(this.isOccupied()) {
+            Text t = new Text(this.getOccupantId());
+            if(this.earlyOccupied) {
+                t.setFill(Color.YELLOW);
+            } else {
+                t.setFill(Color.WHITE);
+            }
+            t.setX(x - 34);
+            t.setY(y + 4);
+            t.setFont(Font.font("monospace"));
+            entity = FXGL.entityBuilder().view(t).buildAndAttach();
         }
-        if(this.path != null) {
-            System.err.println("Path already set for " + this.id);
-            return;
-        }
-        if(!path.canActivate()) {
-            System.err.println("Path cannot be activated for " + this.id);
-            return;
-        }
-        
-        this.path = path;
-        this.nextBlock = path.getEndBlock();
-        this.path.activate();
-        this.updateSignal();
-    }
-
-    @Override
-    public void clearPath() {
-        if(this.path == null) {
-            return;
-        }
-        this.path.deactivate();
-        this.path = null;
-        this.nextBlock = null;
-        this.updateSignal();
+        updateSignal();
     }
 
     @Override
@@ -105,5 +85,14 @@ public class SignalBlock extends Block implements SignalledBlock {
     @Override
     public SignalAspect getAspect() {
         return this.signal.getAspect();
+    }
+
+    @Override
+    public boolean canExit() {
+        if(getAspect() == SignalAspect.DANGER) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

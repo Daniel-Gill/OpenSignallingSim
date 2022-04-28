@@ -12,11 +12,12 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.danielgill.ros.path.Path;
+import net.danielgill.ros.train.Train;
 import net.danielgill.ros.ui.Direction;
 import net.danielgill.ros.ui.Drawable;
 import net.danielgill.ros.ui.Selectable;
 
-public abstract class Block implements Drawable, Selectable {
+public abstract class Block implements Drawable, Selectable, Exitable {
     protected String id;
 
     //location on screen
@@ -25,11 +26,12 @@ public abstract class Block implements Drawable, Selectable {
     protected Direction direction;
 
     //train reference text entity
-    private Entity entity;
+    protected Entity entity;
 
     // trains in block
     protected boolean occupied;
-    //private Train train;
+    protected boolean earlyOccupied;
+    protected Train train;
 
     // path from block
     protected Path path;
@@ -58,11 +60,37 @@ public abstract class Block implements Drawable, Selectable {
         return occupied;
     }
 
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
+    public void occupy(Train t) {
+        occupied = true;
+        earlyOccupied = false;
+        train = t;
+        this.update();
+    }
+
+    public void occupyEarly(Train t) {
+        occupied = true;
+        earlyOccupied = true;
+        train = t;
+        this.update();
+    }
+
+    public void setNotEarly() {
+        earlyOccupied = false;
+        this.update();
+    }
+
+    public void unoccupy() {
+        occupied = false;
+        earlyOccupied = false;
+        train = null;
+        this.update();
     }
 
     public void setPath(Path path) {
+        if(path == null) {
+            System.err.println("No path to be set for " + this.id);
+            return;
+        }
         if(!forwardBlocks.contains(path.getEndBlock())) {
             System.err.println(path.getStartBlock().id + " is not a forward block of " + this.id);
             return;
@@ -75,22 +103,33 @@ public abstract class Block implements Drawable, Selectable {
             System.err.println("Path cannot be activated for " + this.id);
             return;
         }
+        
         this.path = path;
         this.nextBlock = path.getEndBlock();
         this.path.activate();
+        this.update();
     }
 
     public void clearPath() {
         if(this.path == null) {
             return;
         }
+        if(this.occupied) {
+            System.err.println("Cannot clear path for occupied block " + this.id);
+            return;
+        }
         this.path.deactivate();
         this.path = null;
         this.nextBlock = null;
+        this.update();
     }
 
     public Path getPath() {
         return path;
+    }
+
+    public boolean hasPath() {
+        return path != null;
     }
 
     public void addPath(Path path) {
@@ -98,9 +137,16 @@ public abstract class Block implements Drawable, Selectable {
         path.getEndBlock().addBackBlock(this);
     }
 
+    public Block getNextBlock() {
+        return nextBlock;
+    }
+
     public String getOccupantId() {
-        //TODO replace with Train
-        return "1A01";
+        if(occupied) {
+            return train.getId();
+        } else {
+            return "NULL";
+        }
     }
 
     protected void addFowardBlock(Block block) {
@@ -152,7 +198,11 @@ public abstract class Block implements Drawable, Selectable {
         }
         if(this.isOccupied()) {
             Text t = new Text(this.getOccupantId());
-            t.setFill(Color.WHITE);
+            if(this.earlyOccupied) {
+                t.setFill(Color.YELLOW);
+            } else {
+                t.setFill(Color.WHITE);
+            }
             t.setX(x - 34);
             t.setY(y + 4);
             t.setFont(Font.font("monospace"));

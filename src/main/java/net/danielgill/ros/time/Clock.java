@@ -16,25 +16,35 @@ public class Clock {
     private List<Runnable> runAtSecond;
     private List<Runnable> actions;
     private Map<Runnable, Time> actionTimes;
+    private Map<Runnable, String> flags;
+    private Map<String, Boolean> flagsState;
 
-    public Clock(int hour, int minute, int second) {
-        time = new Time(hour, minute, second);
+    public Clock(Time t) {
+        time = t;
         runAtSecond = new ArrayList<>();
         actions = new ArrayList<>();
         actionTimes = new HashMap<>();
+        flags = new HashMap<>();
+        flagsState = new HashMap<>();
+
         ta = getGameTimer().runAtInterval(() -> {
             runActions();
             for(Runnable r : runAtSecond) {
-                r.run();
+                if(flags.containsKey(r)) {
+                    if(!flagsState.get(flags.get(r))) {
+                        r.run();
+                    }
+                } else {
+                    r.run();
+                }
             }
-            System.out.println(time.toString());
             time.addSecond(1);
         }, Duration.seconds(1));
+
         ta.pause();
     }
 
     public void start() {
-        System.out.println("START");
         ta.resume();
     }
 
@@ -51,14 +61,37 @@ public class Clock {
         actionTimes.put(r, t);
     }
 
-    public void runAtSecond(Runnable r) {
+    public Runnable runAtSecond(Runnable r) {
         runAtSecond.add(r);
+        return r;
+    }
+
+    public Runnable runAtSecond(Runnable r, String flag) {
+        runAtSecond.add(r);
+        flags.put(r, flag);
+        flagsState.put(flag, false);
+        return r;
     }
 
     public void runAfter(Runnable r, int second) {
         Time t = time.copy();
         t.addSecond(second);
         runAtTime(r, t);
+    }
+
+    public void runAfter(Runnable r, Time t) {
+        Time time = this.time.copy();
+        time.addTime(t);
+        System.out.println("Running at " + time);
+        runAtTime(r, time);
+    }
+
+    public void removeRun(Runnable r) {
+        runAtSecond.remove(r);
+    }
+
+    public void setFlag(String flag, boolean state) {
+        flagsState.put(flag, state);
     }
 
     private void runActions() {
@@ -78,5 +111,9 @@ public class Clock {
 
     public Time getTime() {
         return time;
+    }
+
+    public void setTime(Time t) {
+        time = t;
     }
 }

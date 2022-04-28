@@ -82,4 +82,12 @@ public class Path {
     public Direction getDirection() {
         return direction;
     }
+
+    public int getTotalDistance() {
+        int distance = 0;
+        for(Track t : track) {
+            distance += t.getDistance();
+        }
+        return distance;
+    }
 }

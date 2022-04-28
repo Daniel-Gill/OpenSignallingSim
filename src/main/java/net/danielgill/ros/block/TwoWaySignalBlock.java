@@ -2,9 +2,11 @@ package net.danielgill.ros.block;
 
 import com.almasb.fxgl.dsl.FXGL;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
-import net.danielgill.ros.path.Path;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import net.danielgill.ros.signal.Signal;
 import net.danielgill.ros.signal.SignalAspect;
 import net.danielgill.ros.ui.Direction;
@@ -35,19 +37,29 @@ public class TwoWaySignalBlock extends Block implements SignalledBlock {
             mainSignal.update(null);
             oppositeSignal.update(null);
         }
-        //print signal status
-        System.out.println(this.id + ": " + mainSignal.getAspect() + " " + oppositeSignal.getAspect());
         for(Block b : backBlocks) {
-            if(b instanceof SignalledBlock) {
-                ((SignalledBlock) b).updateSignal();
-            }
+            b.update();
         }
     }
 
     @Override
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
-        this.updateSignal();
+    public void update() {
+        if(entity != null) {
+            FXGL.getGameWorld().removeEntity(entity);
+        }
+        if(this.isOccupied()) {
+            Text t = new Text(this.getOccupantId());
+            if(this.earlyOccupied) {
+                t.setFill(Color.YELLOW);
+            } else {
+                t.setFill(Color.WHITE);
+            }
+            t.setX(x - 34);
+            t.setY(y + 4);
+            t.setFont(Font.font("monospace"));
+            entity = FXGL.entityBuilder().view(t).buildAndAttach();
+        }
+        updateSignal();
     }
 
     public void drawSignals(int x, int y, Direction direction) {
@@ -61,31 +73,6 @@ public class TwoWaySignalBlock extends Block implements SignalledBlock {
         } else if(direction == Direction.SOUTH) {
             oppositeSignal.draw(x, y - 40, direction.getOpposite());
         }
-    }
-
-    @Override
-    public void setPath(Path path) {
-        if(path == null) {
-            System.err.println("No path to be set for " + this.id);
-            return;
-        }
-        if(!forwardBlocks.contains(path.getEndBlock())) {
-            System.err.println(path.getStartBlock().id + " is not a forward block of " + this.id);
-            return;
-        }
-        if(this.path != null) {
-            System.err.println("Path already set for " + this.id);
-            return;
-        }
-        if(!path.canActivate()) {
-            System.err.println("Path cannot be activated for " + this.id);
-            return;
-        }
-        
-        this.path = path;
-        this.nextBlock = path.getEndBlock();
-        this.path.activate();
-        this.updateSignal();
     }
     
     @Override
@@ -125,6 +112,15 @@ public class TwoWaySignalBlock extends Block implements SignalledBlock {
             return mainSignal.getAspect();
         } else {
             return oppositeSignal.getAspect();
+        }
+    }
+
+    @Override
+    public boolean canExit() {
+        if(this.getAspect() == SignalAspect.DANGER) {
+            return false;
+        } else {
+            return true;
         }
     }
 

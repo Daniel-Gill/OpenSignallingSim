@@ -60,6 +60,36 @@ public class Time {
         }
     }
 
+    public void removeMinutes(int minute) {
+        this.minute -= minute;
+        if(this.minute < 0) {
+            this.hour -= 1;
+            this.minute = 60 + this.minute;
+        }
+        if(this.second >= 60) {
+            this.minute += this.second / 60;
+            this.second = this.second % 60;
+        }
+        if(this.minute >= 60) {
+            this.hour += this.minute / 60;
+            this.minute = this.minute % 60;
+        }
+    }
+    
+    public void addTime(Time t) {
+        this.second += t.second;
+        this.minute += t.minute;
+        this.hour += t.hour;
+        if(this.second >= 60) {
+            this.minute += this.second / 60;
+            this.second = this.second % 60;
+        }
+        if(this.minute >= 60) {
+            this.hour += this.minute / 60;
+            this.minute = this.minute % 60;
+        }
+    }
+
     public int getHour() {
         return hour;
     }

@@ -9,6 +9,7 @@ import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.ui.UI;
 
 import javafx.scene.input.MouseButton;
+import net.danielgill.oss.railway.ParseRailway;
 import net.danielgill.oss.railway.Railway;
 import net.danielgill.oss.time.Clock;
 import net.danielgill.oss.time.Time;
@@ -67,8 +68,8 @@ public class App extends GameApplication {
         FXGL.getGameScene().addUI(ui);
     }
 
-    public static void loadRailway(File file) {
-
+    public static void loadRoute(File file) {
+        railway = ParseRailway.parseRailway(file);
     }
 
     public static void main(String[] args) {

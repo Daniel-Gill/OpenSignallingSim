@@ -1,6 +1,3 @@
-/**
- * @author Almas Baimagambetov (almaslvl@gmail.com)
- */
-open module ros.main {
+open module oss.main {
     requires com.almasb.fxgl.all;
 }

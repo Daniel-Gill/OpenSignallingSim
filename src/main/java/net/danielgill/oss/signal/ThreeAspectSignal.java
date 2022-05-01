@@ -67,5 +67,6 @@ public class ThreeAspectSignal extends Signal {
             Circle c = new Circle(x, y, 6);
             c.setFill(Color.ORANGE);
             entity = FXGL.entityBuilder().at(0,0).view(c).buildAndAttach();
+        }
     }
 }

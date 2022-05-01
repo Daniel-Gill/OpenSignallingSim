@@ -5,12 +5,16 @@ import com.almasb.fxgl.ui.UIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.stage.FileChooser;
 import net.danielgill.ros.App;
 
 public class MainController implements UIController {
     @FXML private Menu clock;
     @FXML private MenuItem start;
     @FXML private MenuItem pause;
+
+    @FXML private MenuItem loadRoute;
+    @FXML private MenuItem loadTimetable;
 
     @Override
     public void init() {
@@ -26,6 +30,11 @@ public class MainController implements UIController {
         pause.setOnAction(value -> {
             App.clock.pause();
         });
+    }
+
+    @FXML
+    private void loadRoute() {
+        FileChooser fc = new FileChooser();
     }
     
 }

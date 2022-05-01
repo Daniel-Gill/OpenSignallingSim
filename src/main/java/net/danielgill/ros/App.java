@@ -1,5 +1,7 @@
 package net.danielgill.ros;
 
+import java.io.File;
+
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
@@ -63,6 +65,10 @@ public class App extends GameApplication {
     protected void initUI() {
         UI ui = FXGL.getAssetLoader().loadUI("main.fxml", new MainController());
         FXGL.getGameScene().addUI(ui);
+    }
+
+    public static void loadRailway(File file) {
+        
     }
 
     public static void main(String[] args) {

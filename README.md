@@ -1,10 +1,10 @@
-## Railway Operation Simulator in Java
+## OpenSignallingSim
 
-A reworking of the original [Railway Operation Simulator](https://www.railwayoperationsimulator.com/) in Java with some additional features. This project is a work in progress.
+A project aimed at simulating UK signalling systems, and allows the user to interact with signals and route trains through user created routes.
 
-This project is not intended to replace the original simulator, but rather to provide a different experience with some different features.
+This project is inspired heavily by [Railway Operation Simulator](https://www.railwayoperationsimulator.com/) which was originally written by Albert Ball.
 
-### Run via Maven
+### Run using Maven
 
 ```
 mvn javafx:run

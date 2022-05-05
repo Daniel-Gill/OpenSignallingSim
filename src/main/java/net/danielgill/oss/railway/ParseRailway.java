@@ -106,7 +106,11 @@ public class ParseRailway {
 
         Block start = r.getBlockByID(startID);
         Block end = r.getBlockByID(endID);
-        return new Path(start, end, direction);
+
+        Path p = new Path(start, end, direction);
+        start.addPath(p);
+
+        return p;
     }
 
     private static Track parseTrack(JsonObject track, Railway r) {

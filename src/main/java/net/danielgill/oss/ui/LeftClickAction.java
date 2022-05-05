@@ -28,8 +28,6 @@ public class LeftClickAction extends UserAction {
             this.block = null;
             return;
         }
-        
-        System.out.println("Block: " + b.getId());
 
         if(this.block == null) {
             this.block = b;

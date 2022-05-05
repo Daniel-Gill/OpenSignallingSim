@@ -15,4 +15,17 @@ public enum Direction {
         }
         return null;
     }
+
+    public static Direction getFromString(String s) {
+        if(s.equalsIgnoreCase("NORTH")) {
+            return NORTH;
+        } else if(s.equalsIgnoreCase("SOUTH")) {
+            return SOUTH;
+        } else if(s.equalsIgnoreCase("EAST")) {
+            return EAST;
+        } else if(s.equalsIgnoreCase("WEST")) {
+            return WEST;
+        }
+        return null;
+    }
 }

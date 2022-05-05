@@ -40,9 +40,6 @@ public class App extends GameApplication {
 
     @Override
     protected void initGame() {
-        railway.build();
-        railway.draw();
-
         ttb = new Timetable(new Time(7, 0, 0));
         clock = new Clock(ttb.getStartTime());
 
@@ -71,7 +68,9 @@ public class App extends GameApplication {
     }
 
     public static void loadRoute(File file) throws IOException, JsonException {
+        FXGL.getGameScene().clearGameViews();
         railway = ParseRailway.parseRailway(file);
+        railway.draw();
     }
 
     public static void main(String[] args) {

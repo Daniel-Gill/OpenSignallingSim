@@ -1,12 +1,14 @@
 package net.danielgill.oss;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.ui.UI;
+import com.github.cliftonlabs.json_simple.JsonException;
 
 import javafx.scene.input.MouseButton;
 import net.danielgill.oss.railway.ParseRailway;
@@ -68,7 +70,7 @@ public class App extends GameApplication {
         FXGL.getGameScene().addUI(ui);
     }
 
-    public static void loadRoute(File file) {
+    public static void loadRoute(File file) throws IOException, JsonException {
         railway = ParseRailway.parseRailway(file);
     }
 

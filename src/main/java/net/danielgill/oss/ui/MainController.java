@@ -1,11 +1,14 @@
 package net.danielgill.oss.ui;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.ui.UIController;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.github.cliftonlabs.json_simple.JsonException;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
@@ -39,7 +42,7 @@ public class MainController implements UIController {
     }
 
     @FXML
-    private void loadRoute() throws URISyntaxException {
+    private void loadRoute() throws URISyntaxException, JsonParseException, IOException, JsonException {
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("OpenSignallingSim route file (.rte)", "*.rte"));
         URL url = getClass().getProtectionDomain().getCodeSource().getLocation();

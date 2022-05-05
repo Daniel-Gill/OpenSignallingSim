@@ -5,13 +5,7 @@ import java.util.List;
 
 import javafx.geometry.Point2D;
 import net.danielgill.oss.block.Block;
-import net.danielgill.oss.block.SignalBlock;
-import net.danielgill.oss.block.TwoWaySignalBlock;
 import net.danielgill.oss.path.Path;
-import net.danielgill.oss.signal.FourAspectSignal;
-import net.danielgill.oss.signal.ShuntSignal;
-import net.danielgill.oss.track.Track;
-import net.danielgill.oss.ui.Direction;
 import net.danielgill.oss.ui.Drawable;
 import net.danielgill.oss.ui.Selectable;
 

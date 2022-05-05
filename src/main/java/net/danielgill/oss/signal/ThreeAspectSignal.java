@@ -7,7 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import net.danielgill.oss.block.Block;
 import net.danielgill.oss.block.SignalledBlock;
-import net.danielgill.oss.ui.Direction;
 
 public class ThreeAspectSignal extends Signal {
     private Entity secondEntity;

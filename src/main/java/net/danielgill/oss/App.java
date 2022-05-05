@@ -57,8 +57,8 @@ public class App extends GameApplication {
     }
 
     private void registerInputs(Input input) {
-        input.addAction(new RightClickAction("Right Click", App.railway), MouseButton.SECONDARY);
-        input.addAction(new LeftClickAction("Left Click", App.railway), MouseButton.PRIMARY);
+        input.addAction(new RightClickAction("Right Click"), MouseButton.SECONDARY);
+        input.addAction(new LeftClickAction("Left Click"), MouseButton.PRIMARY);
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.geometry.Point2D;
 import net.danielgill.oss.block.Block;
 import net.danielgill.oss.path.Path;
+import net.danielgill.oss.track.Track;
 import net.danielgill.oss.ui.Drawable;
 import net.danielgill.oss.ui.Selectable;
 
@@ -29,6 +30,10 @@ public class Railway {
         paths.add(p);
     }
 
+    public void addTrack(Track t) {
+        drawables.add(t);
+    }
+    
     public void draw() {
         drawables.forEach(e -> e.draw());
         drawables.forEach(e -> e.update());

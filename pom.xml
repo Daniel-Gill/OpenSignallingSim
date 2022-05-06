@@ -27,6 +27,12 @@
             <artifactId>fxgl</artifactId>
             <version>${fxgl.version}</version>
         </dependency>
+    
+        <dependency>
+            <groupId>com.github.cliftonlabs</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>4.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -81,7 +87,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${jfx.maven.version}</version>
                 <configuration>
-                    <mainClass>ros.main/net.danielgill.oss.App</mainClass>
+                    <mainClass>oss.main/net.danielgill.oss.App</mainClass>
                 </configuration>
             </plugin>
             <plugin>

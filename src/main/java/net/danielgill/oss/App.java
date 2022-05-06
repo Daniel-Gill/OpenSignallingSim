@@ -1,14 +1,17 @@
 package net.danielgill.oss;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.ui.UI;
+import com.github.cliftonlabs.json_simple.JsonException;
 
 import javafx.scene.input.MouseButton;
+import net.danielgill.oss.railway.ParseRailway;
 import net.danielgill.oss.railway.Railway;
 import net.danielgill.oss.time.Clock;
 import net.danielgill.oss.time.Time;
@@ -37,9 +40,6 @@ public class App extends GameApplication {
 
     @Override
     protected void initGame() {
-        railway.build();
-        railway.draw();
-
         ttb = new Timetable(new Time(7, 0, 0));
         clock = new Clock(ttb.getStartTime());
 
@@ -57,8 +57,8 @@ public class App extends GameApplication {
     }
 
     private void registerInputs(Input input) {
-        input.addAction(new RightClickAction("Right Click", App.railway), MouseButton.SECONDARY);
-        input.addAction(new LeftClickAction("Left Click", App.railway), MouseButton.PRIMARY);
+        input.addAction(new RightClickAction("Right Click"), MouseButton.SECONDARY);
+        input.addAction(new LeftClickAction("Left Click"), MouseButton.PRIMARY);
     }
 
     @Override
@@ -67,8 +67,10 @@ public class App extends GameApplication {
         FXGL.getGameScene().addUI(ui);
     }
 
-    public static void loadRailway(File file) {
-
+    public static void loadRoute(File file) throws IOException, JsonException {
+        FXGL.getGameScene().clearGameViews();
+        railway = ParseRailway.parseRailway(file);
+        railway.draw();
     }
 
     public static void main(String[] args) {

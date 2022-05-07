@@ -15,7 +15,10 @@ import net.danielgill.oss.block.SignalBlock;
 import net.danielgill.oss.block.TwoWaySignalBlock;
 import net.danielgill.oss.path.Path;
 import net.danielgill.oss.signal.FourAspectSignal;
+import net.danielgill.oss.signal.ShuntSignal;
 import net.danielgill.oss.signal.Signal;
+import net.danielgill.oss.signal.ThreeAspectSignal;
+import net.danielgill.oss.signal.TwoAspectSignal;
 import net.danielgill.oss.track.Track;
 import net.danielgill.oss.ui.Direction;
 
@@ -89,11 +92,20 @@ public class ParseRailway {
 
     private static Signal parseSignal(JsonObject jo) {
         String type = (String) jo.get("type");
+        int xOffset = ((BigDecimal) jo.get("xOffset")).intValue();
+        int yOffset = ((BigDecimal) jo.get("yOffset")).intValue();
 
         if(type.equalsIgnoreCase("4AT")) {
-            int xOffset = ((BigDecimal) jo.get("xOffset")).intValue();
-            int yOffset = ((BigDecimal) jo.get("yOffset")).intValue();
             return new FourAspectSignal(xOffset, yOffset);
+        }
+        if(type.equalsIgnoreCase("3AT")) {
+            return new ThreeAspectSignal(xOffset, yOffset);
+        }
+        if(type.equalsIgnoreCase("2AT")) {
+            return new TwoAspectSignal(xOffset, yOffset);
+        }
+        if(type.equalsIgnoreCase("shunt")) {
+            return new ShuntSignal(xOffset, yOffset);
         }
 
         return null;

@@ -53,6 +53,9 @@ public class ParseRailway {
                 r.addTrack(parseTrack(track, r));
             }
 
+            a = (JsonArray) jo.get("interlocks");
+            parseInterlocks(a, r);
+
         } else {
             sc.close();
             return null;
@@ -142,5 +145,14 @@ public class ParseRailway {
             r.getPathByID(path).addTrack(t);
         }
         return t;
+    }
+
+    private static void parseInterlocks(JsonArray a, Railway r) {
+        for(int i = 0; i < a.size(); i++) {
+            JsonArray il = (JsonArray) a.get(i);
+            String start = (String) il.get(0);
+            String end = (String) il.get(1);
+            r.getPathByID(start).addInterlock(r.getPathByID(end));
+        }
     }
 }

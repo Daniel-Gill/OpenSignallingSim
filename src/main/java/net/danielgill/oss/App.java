@@ -2,6 +2,7 @@ package net.danielgill.oss;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -11,6 +12,7 @@ import com.almasb.fxgl.ui.UI;
 import com.github.cliftonlabs.json_simple.JsonException;
 
 import javafx.scene.input.MouseButton;
+import javafx.scene.text.Text;
 import net.danielgill.oss.railway.ParseRailway;
 import net.danielgill.oss.railway.Railway;
 import net.danielgill.oss.time.Clock;
@@ -26,6 +28,8 @@ public class App extends GameApplication {
     public static Clock clock;
     public static Railway railway;
     public static Timetable ttb;
+
+    public static Text text;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -65,6 +69,18 @@ public class App extends GameApplication {
     protected void initUI() {
         UI ui = FXGL.getAssetLoader().loadUI("main.fxml", new MainController());
         FXGL.getGameScene().addUI(ui);
+
+        text = new Text();
+        text.setTranslateX(5);
+        text.setTranslateY(40);
+        text.textProperty().bind(FXGL.getWorldProperties().stringProperty("textHint"));
+
+        FXGL.getGameScene().addUINode(text);
+    }
+
+    @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("textHint", "TEST");
     }
 
     public static void loadRoute(File file) throws IOException, JsonException {

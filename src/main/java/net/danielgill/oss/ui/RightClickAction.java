@@ -9,6 +9,8 @@ import net.danielgill.oss.block.Block;
 import net.danielgill.oss.railway.Railway;
 
 public class RightClickAction extends UserAction {
+    Point2D lastPos;
+
     public RightClickAction(String name) {
         super(name);
     }
@@ -17,13 +19,21 @@ public class RightClickAction extends UserAction {
     protected void onActionBegin() {
         Railway r = App.railway;
 
-        Point2D lastPos = FXGL.getInput().getMousePositionUI();
+        lastPos = FXGL.getInput().getMousePositionUI();
         Block b = r.getBlockAt(lastPos);
 
         if(b == null) {
             return;
         }
-
+        
         b.clearPath();
+    }
+
+    @Override
+    protected void onAction() {
+        lastPos = FXGL.getInput().getMousePositionUI();
+        int x = (int) lastPos.getX();
+        int y = (int) lastPos.getY();
+        FXGL.set("textHint", "[" + x + ", " + y + "]");
     }
 }

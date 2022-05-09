@@ -25,6 +25,8 @@ public class MainController implements UIController {
     @FXML private MenuItem loadRoute;
     @FXML private MenuItem loadTimetable;
 
+    private File routeFile = null;
+
     @Override
     public void init() {
         clock.setText(App.clock.getTime().toString());
@@ -50,8 +52,16 @@ public class MainController implements UIController {
         fc.setInitialDirectory(new File(jarFile.getParentFile().getAbsolutePath()));
         Stage stage = FXGL.getPrimaryStage();
         File file = fc.showOpenDialog(stage);
+        this.routeFile = file;
         if(file != null) {
             App.loadRoute(file);
+        }
+    }
+
+    @FXML
+    private void reloadRoute() throws IOException, JsonException {
+        if(this.routeFile != null) {
+            App.loadRoute(this.routeFile);
         }
     }
     

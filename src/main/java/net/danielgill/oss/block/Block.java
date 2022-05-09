@@ -11,6 +11,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import net.danielgill.oss.location.Location;
 import net.danielgill.oss.path.Path;
 import net.danielgill.oss.train.Train;
 import net.danielgill.oss.ui.Direction;
@@ -33,6 +34,9 @@ public abstract class Block implements Drawable, Selectable, Exitable {
     protected boolean earlyOccupied;
     protected Train train;
 
+    // timetable stuff
+    protected Location location;
+
     // path from block
     protected Path path;
     protected Block nextBlock;
@@ -42,6 +46,17 @@ public abstract class Block implements Drawable, Selectable, Exitable {
     protected ArrayList<Block> backBlocks;
 
     public Block(String id, int x, int y, Direction direction) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+        this.occupied = false;
+
+        forwardBlocks = new ArrayList<>();
+        backBlocks = new ArrayList<>();
+    }
+
+    public Block(String id, int x, int y, Direction direction, Location location) {
         this.id = id;
         this.x = x;
         this.y = y;

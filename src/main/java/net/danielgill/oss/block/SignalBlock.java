@@ -7,6 +7,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import net.danielgill.oss.location.Location;
 import net.danielgill.oss.signal.Signal;
 import net.danielgill.oss.signal.SignalAspect;
 import net.danielgill.oss.ui.Direction;
@@ -16,6 +17,12 @@ public class SignalBlock extends Block implements SignalledBlock {
 
     public SignalBlock(String id, int x, int y, Direction direction, Signal signal) {
         super(id, x, y, direction);
+        this.signal = signal;
+        this.signal.update(null);
+    }
+
+    public SignalBlock(String id, int x, int y, Direction direction, Location location, Signal signal) {
+        super(id, x, y, direction, location);
         this.signal = signal;
         this.signal.update(null);
     }

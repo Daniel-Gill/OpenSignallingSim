@@ -7,6 +7,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import net.danielgill.oss.location.Location;
 import net.danielgill.oss.signal.Signal;
 import net.danielgill.oss.signal.SignalAspect;
 import net.danielgill.oss.ui.Direction;
@@ -17,6 +18,14 @@ public class TwoWaySignalBlock extends Block implements SignalledBlock {
 
     public TwoWaySignalBlock(String id, int x, int y, Direction direction, Signal signal, Signal oppositeSignal) {
         super(id, x, y, direction);
+        this.mainSignal = signal;
+        this.oppositeSignal = oppositeSignal;
+        this.mainSignal.update(null);
+        this.oppositeSignal.update(null);
+    }
+
+    public TwoWaySignalBlock(String id, int x, int y, Direction direction, Location location, Signal signal, Signal oppositeSignal) {
+        super(id, x, y, direction, location);
         this.mainSignal = signal;
         this.oppositeSignal = oppositeSignal;
         this.mainSignal.update(null);

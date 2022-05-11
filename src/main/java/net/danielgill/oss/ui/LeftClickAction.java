@@ -11,6 +11,10 @@ import net.danielgill.oss.railway.Railway;
 
 public class LeftClickAction extends UserAction {
     private Block block;
+    private Point2D lastPos;
+
+    //used for printing status
+    private Block toBlock = null;
 
     public LeftClickAction(String name) {
         super(name);
@@ -21,7 +25,7 @@ public class LeftClickAction extends UserAction {
     protected void onActionBegin() {
         Railway r = App.railway;
 
-        Point2D lastPos = FXGL.getInput().getMousePositionUI();
+        lastPos = FXGL.getInput().getMousePositionUI();
         Block b = r.getBlockAt(lastPos);
 
         if(b == null) {
@@ -42,7 +46,7 @@ public class LeftClickAction extends UserAction {
         Path p = r.getPathByID(this.block.getId() + "-" + b.getId());
         this.block.setPath(p);
         this.block.update();
-        this.block = null;
+        toBlock = b;
     }
 
     @Override
@@ -52,6 +56,17 @@ public class LeftClickAction extends UserAction {
 
     @Override
     protected void onActionEnd() {
+        int x = Math.round((int) lastPos.getX() / 5) * 5;
+        int y = Math.round((int) lastPos.getY() / 5) * 5;
 
+        if(this.block != null && toBlock == null) {
+            FXGL.set("textHint", "Selected block " + this.block.getId() + " [" + x + ", " + y + "]");
+        } else if(this.block != null && toBlock != null) {
+            FXGL.set("textHint", "Set path from " + this.block.getId() + " to " + this.toBlock.getId() + " [" + x + ", " + y + "]");
+            this.block = null;
+            toBlock = null;
+        } else {
+            FXGL.set("textHint", "[" + x + ", " + y + "]");
+        }
     }
 }

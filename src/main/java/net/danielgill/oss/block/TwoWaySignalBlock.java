@@ -47,6 +47,9 @@ public class TwoWaySignalBlock extends Block implements SignalledBlock {
             oppositeSignal.update(null);
         }
         for(Block b : backBlocks) {
+            if(b == this || path == null) {
+                break;
+            }
             b.update();
         }
     }

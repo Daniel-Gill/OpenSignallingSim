@@ -35,6 +35,9 @@ public class SignalBlock extends Block implements SignalledBlock {
             signal.update(null);
         }
         for(Block b : backBlocks) {
+            if(b == this || path == null) {
+                break;
+            }
             if(b instanceof SignalledBlock) {
                 ((SignalledBlock) b).updateSignal();
             }

@@ -93,7 +93,12 @@ public class ParseRailway {
             Direction direction = Direction.getFromString((String) jo.get("direction"));
 
             JsonArray a = (JsonArray) jo.get("signals");
-            Block b = new TwoWaySignalBlock(id, x, y, direction, parseSignal((JsonObject) a.get(0)), parseSignal((JsonObject) a.get(1)));
+            Block b;
+            if(jo.containsKey("location")) {
+                b = new TwoWaySignalBlock(id, x, y, direction, parseSignal((JsonObject) a.get(0)), parseSignal((JsonObject) a.get(1)), new Location(jo.get("location").toString()));
+            } else {
+                b = new TwoWaySignalBlock(id, x, y, direction, parseSignal((JsonObject) a.get(0)), parseSignal((JsonObject) a.get(1)));
+            }
             return b;
         }
 

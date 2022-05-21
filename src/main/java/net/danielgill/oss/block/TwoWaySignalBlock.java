@@ -24,7 +24,7 @@ public class TwoWaySignalBlock extends Block implements SignalledBlock {
         this.oppositeSignal.update(null);
     }
 
-    public TwoWaySignalBlock(String id, int x, int y, Direction direction, Location location, Signal signal, Signal oppositeSignal) {
+    public TwoWaySignalBlock(String id, int x, int y, Direction direction, Signal signal, Signal oppositeSignal, Location location) {
         super(id, x, y, direction, location);
         this.mainSignal = signal;
         this.oppositeSignal = oppositeSignal;

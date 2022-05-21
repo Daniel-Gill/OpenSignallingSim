@@ -21,7 +21,7 @@ public class SignalBlock extends Block implements SignalledBlock {
         this.signal.update(null);
     }
 
-    public SignalBlock(String id, int x, int y, Direction direction, Location location, Signal signal) {
+    public SignalBlock(String id, int x, int y, Direction direction, Signal signal, Location location) {
         super(id, x, y, direction, location);
         this.signal = signal;
         this.signal.update(null);

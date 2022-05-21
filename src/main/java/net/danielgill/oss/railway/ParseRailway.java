@@ -13,6 +13,7 @@ import com.github.cliftonlabs.json_simple.Jsoner;
 import net.danielgill.oss.block.Block;
 import net.danielgill.oss.block.SignalBlock;
 import net.danielgill.oss.block.TwoWaySignalBlock;
+import net.danielgill.oss.location.Location;
 import net.danielgill.oss.path.Path;
 import net.danielgill.oss.signal.FourAspectSignal;
 import net.danielgill.oss.signal.ShuntSignal;
@@ -75,7 +76,13 @@ public class ParseRailway {
             Direction direction = Direction.getFromString((String) jo.get("direction"));
 
             JsonArray a = (JsonArray) jo.get("signals");
-            Block b = new SignalBlock(id, x, y, direction, parseSignal((JsonObject) a.get(0)));
+            Block b;
+            if(jo.containsKey("location")) {
+                b = new SignalBlock(id, x, y, direction, parseSignal((JsonObject) a.get(0)), new Location(jo.get("location").toString()));
+            } else {
+                b = new SignalBlock(id, x, y, direction, parseSignal((JsonObject) a.get(0)));
+            }
+            
             return b;
         }
 

@@ -62,6 +62,7 @@ public abstract class Block implements Drawable, Selectable, Exitable {
         this.y = y;
         this.direction = direction;
         this.occupied = false;
+        this.location = location;
 
         forwardBlocks = new ArrayList<>();
         backBlocks = new ArrayList<>();
@@ -245,6 +246,10 @@ public abstract class Block implements Drawable, Selectable, Exitable {
             }
         }
         return false;
+    }
+
+    public Location getLocation() {
+        return this.location;
     }
 
 }

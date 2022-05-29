@@ -7,6 +7,7 @@ import net.danielgill.oss.time.Time;
 import net.danielgill.oss.timetable.Schedule;
 import net.danielgill.oss.timetable.event.EntryEvent;
 import net.danielgill.oss.timetable.event.EventType;
+import net.danielgill.oss.timetable.event.StopEvent;
 
 public class Train {
     private String id;
@@ -57,6 +58,7 @@ public class Train {
             System.out.println("[" + id + "] Entered block " + block.getId() + " at time " + t);
             status = TrainStatus.WAITING;
             block.setNotEarly();
+            schedule.removeNext();
             App.clock.runAtSecond(() -> {
                 run();
             }, "train_" + id + "_run");
@@ -65,7 +67,28 @@ public class Train {
 
     private void run() {
         if(status == TrainStatus.WAITING) {
-            System.out.println("WAITING");
+            if(schedule.getNext().getType() == EventType.STOP) {
+                StopEvent e = (StopEvent) schedule.getNext();
+                if(e.getLocation().equals(block.getLocation())) {
+                    //print current block location name
+                    System.out.println("[" + id + "] Stopped at " + block.getLocation().getName());
+                    //print timetable location name
+                    System.out.println("[" + id + "] Scheduled stop at " + e.getLocation().getName());
+                    App.clock.setFlag("train_" + id + "_run", true);
+                    Time t = App.clock.getTime().copy();
+                    System.out.println("[" + id + "] Arrived at " + e.getLocation().getName() + " at time " + t);
+                    t.addSecond(30);
+                    if(e.getDepTime().copy().isAfter(t)) {
+                        App.clock.runAtTime(() -> {
+                            System.out.println("[" + id + "] Departed " + e.getLocation().getName() + " at " + e.getDepTime().copy());
+                        }, e.getDepTime().copy());
+                    } else {
+                        App.clock.runAtTime(() -> {
+                            System.out.println("[" + id + "] Departed " + e.getLocation().getName() + " at " + t);
+                        }, t);
+                    }
+                }
+            }
             if(block.canExit()) {
                 status = TrainStatus.RUNNING;
                 App.clock.setFlag("train_" + id + "_run", true);

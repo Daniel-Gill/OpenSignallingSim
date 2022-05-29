@@ -11,4 +11,20 @@ public class Location {
         return name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        }
+        if(!(o instanceof Location) || o == null) {
+            return false;
+        }
+
+        Location other = (Location) o;
+        if(other.name.equalsIgnoreCase(this.name)) {
+            return true;
+        }
+        return false;
+    }
+
 }

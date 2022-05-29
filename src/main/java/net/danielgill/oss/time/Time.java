@@ -101,4 +101,34 @@ public class Time {
     public int getSecond() {
         return second;
     }
+
+    public boolean isBefore(Time t) {
+        if(hour < t.hour) {
+            return true;
+        } else if(hour == t.hour) {
+            if(minute < t.minute) {
+                return true;
+            } else if(minute == t.minute) {
+                if(second < t.second) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isAfter(Time t) {
+        if(hour > t.hour) {
+            return true;
+        } else if(hour == t.hour) {
+            if(minute > t.minute) {
+                return true;
+            } else if(minute == t.minute) {
+                if(second > t.second) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

@@ -13,6 +13,7 @@ import com.github.cliftonlabs.json_simple.JsonException;
 
 import javafx.scene.input.MouseButton;
 import javafx.scene.text.Text;
+import net.danielgill.oss.location.Location;
 import net.danielgill.oss.railway.ParseRailway;
 import net.danielgill.oss.railway.Railway;
 import net.danielgill.oss.time.Clock;
@@ -20,6 +21,7 @@ import net.danielgill.oss.time.Time;
 import net.danielgill.oss.timetable.Schedule;
 import net.danielgill.oss.timetable.Timetable;
 import net.danielgill.oss.timetable.event.EntryEvent;
+import net.danielgill.oss.timetable.event.StopEvent;
 import net.danielgill.oss.ui.LeftClickAction;
 import net.danielgill.oss.ui.MainController;
 import net.danielgill.oss.ui.RightClickAction;
@@ -46,11 +48,6 @@ public class App extends GameApplication {
     protected void initGame() {
         ttb = new Timetable(new Time(7, 0, 0));
         clock = new Clock(ttb.getStartTime());
-
-        Schedule s = new Schedule("1A02");
-        s.addEvent(new EntryEvent(new Time(7, 1, 5), railway.getBlockByID("1")));
-        ttb.addSchedule(s);
-        ttb.createTrains();
     }
 
     @Override
@@ -87,6 +84,11 @@ public class App extends GameApplication {
         FXGL.getGameScene().clearGameViews();
         railway = ParseRailway.parseRailway(file);
         railway.draw();
+        Schedule s = new Schedule("1A02");
+        s.addEvent(new EntryEvent(new Time(7, 1, 5), railway.getBlockByID("1")));
+        s.addEvent(new StopEvent(new Time(7, 2, 0), new Time(7, 3, 0), new Location("StationA")));
+        ttb.addSchedule(s);
+        ttb.createTrains();
     }
 
     public static void main(String[] args) {
